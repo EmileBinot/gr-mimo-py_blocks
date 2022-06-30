@@ -203,26 +203,6 @@ blocks:
     coordinate: [224, 228.0]
     rotation: 0
     state: true
-- name: digital_corr_est_cc_0
-  id: digital_corr_est_cc
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    mark_delay: ''
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    sps: ''
-    symbols: ''
-    threshold: '0.9'
-    threshold_method: digital.THRESHOLD_ABSOLUTE
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [944, 384.0]
-    rotation: 0
-    state: true
 - name: qtgui_sink_x_0
   id: qtgui_sink_x
   parameters:
