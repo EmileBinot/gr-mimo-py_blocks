@@ -43,7 +43,7 @@ class blk(gr.sync_block):  # other base classes are basic_block, decim_block, in
 
         in0 = input_items[0][:len(self.preamble)]
 
-        h_est = in0.T*self.preamble
+        h_est = in0.T*self.preamble# https://www.youtube.com/watch?v=XCe0xanaPFo
         print(h_est[0])
         
         fig, axs = plt.subplots(5)

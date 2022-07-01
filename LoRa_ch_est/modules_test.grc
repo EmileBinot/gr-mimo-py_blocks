@@ -246,7 +246,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [880, 1324.0]
+    coordinate: [816, 1332.0]
     rotation: 0
     state: enabled
 - name: blocks_file_sink_0_2
@@ -338,7 +338,7 @@ blocks:
     bus_structure: null
     coordinate: [1216, 1812.0]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: blocks_file_sink_0_3_0_0_0_0_0
   id: blocks_file_sink
   parameters:
@@ -356,7 +356,7 @@ blocks:
     bus_structure: null
     coordinate: [688, 1788.0]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: blocks_file_sink_0_3_0_0_0_0_1
   id: blocks_file_sink
   parameters:
@@ -407,7 +407,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [712, 992.0]
+    coordinate: [712, 980.0]
     rotation: 0
     state: disabled
 - name: blocks_null_sink_0
@@ -426,7 +426,7 @@ blocks:
     bus_structure: null
     coordinate: [1288, 1720.0]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: blocks_null_sink_1
   id: blocks_null_sink
   parameters:
@@ -443,7 +443,7 @@ blocks:
     bus_structure: null
     coordinate: [1024, 1256.0]
     rotation: 0
-    state: true
+    state: disabled
 - name: blocks_null_sink_2
   id: blocks_null_sink
   parameters:
@@ -496,7 +496,7 @@ blocks:
     bus_structure: null
     coordinate: [1224, 336.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: blocks_stream_to_vector_0
   id: blocks_stream_to_vector
   parameters:
@@ -514,7 +514,7 @@ blocks:
     bus_structure: null
     coordinate: [240, 1720.0]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: blocks_stream_to_vector_1
   id: blocks_stream_to_vector
   parameters:
@@ -568,7 +568,7 @@ blocks:
     bus_structure: null
     coordinate: [984, 1440.0]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: blocks_tagged_stream_align_1_0
   id: blocks_tagged_stream_align
   parameters:
@@ -644,7 +644,7 @@ blocks:
     bus_structure: null
     coordinate: [1016, 276.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: blocks_vector_to_stream_0
   id: blocks_vector_to_stream
   parameters:
@@ -699,9 +699,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [736, 1044.0]
+    coordinate: [712, 1036.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: epy_block_0
   id: epy_block
   parameters:
@@ -764,7 +764,7 @@ blocks:
     bus_structure: null
     coordinate: [696, 1708.0]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: epy_block_0_1_0_0
   id: epy_block
   parameters:
@@ -916,7 +916,7 @@ blocks:
     bus_structure: null
     coordinate: [864, 1708.0]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: epy_block_10
   id: epy_block
   parameters:
@@ -1017,12 +1017,13 @@ blocks:
       \ preamble_down[0:int(2.25*pow(2,self.SF))])) # concatenate preamble_up and\
       \ preamble_down[0:2.25*M]\n        self.set_output_multiple(len(self.preamble))\n\
       \n    def work(self, input_items, output_items):\n\n        in0 = input_items[0][:len(self.preamble)]\n\
-      \n        h_est = in0.T*self.preamble\n        print(h_est[0])\n        \n \
-      \       fig, axs = plt.subplots(5)\n        axs[0].specgram(in0, NFFT=64, Fs=32,\
-      \ noverlap=8)\n        axs[1].specgram(self.preamble, NFFT=64, Fs=32, noverlap=8)\n\
-      \        axs[2].plot(in0)\n        axs[3].plot(self.preamble)\n        # axs[4].plot(np.arange(0,len(h)),np.real(h),np.arange(0,len(h)),\
-      \ np.imag(h))\n        # axs[4].set_ylim([-1,1])\n        plt.show()\n\n   \
-      \     \n        output_items[0][:len(in0)] = in0\n        return len(in0)\n"
+      \n        h_est = in0.T*self.preamble# https://www.youtube.com/watch?v=XCe0xanaPFo\n\
+      \        print(h_est[0])\n        \n        fig, axs = plt.subplots(5)\n   \
+      \     axs[0].specgram(in0, NFFT=64, Fs=32, noverlap=8)\n        axs[1].specgram(self.preamble,\
+      \ NFFT=64, Fs=32, noverlap=8)\n        axs[2].plot(in0)\n        axs[3].plot(self.preamble)\n\
+      \        # axs[4].plot(np.arange(0,len(h)),np.real(h),np.arange(0,len(h)), np.imag(h))\n\
+      \        # axs[4].set_ylim([-1,1])\n        plt.show()\n\n        \n       \
+      \ output_items[0][:len(in0)] = in0\n        return len(in0)\n"
     affinity: ''
     alias: ''
     comment: ''
@@ -1036,7 +1037,7 @@ blocks:
     bus_structure: null
     coordinate: [800, 1256.0]
     rotation: 0
-    state: true
+    state: disabled
 - name: epy_block_1_0_0
   id: epy_block
   parameters:
@@ -1247,7 +1248,7 @@ blocks:
     bus_structure: null
     coordinate: [1032, 1716.0]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: epy_block_3
   id: epy_block
   parameters:
@@ -1422,7 +1423,7 @@ blocks:
     bus_structure: null
     coordinate: [400, 1700.0]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: epy_block_6
   id: epy_block
   parameters:
@@ -1572,7 +1573,7 @@ blocks:
     bus_structure: null
     coordinate: [1232, 1452.0]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: epy_block_6_0_0
   id: epy_block
   parameters:
@@ -1670,6 +1671,104 @@ blocks:
     coordinate: [528, 1376.0]
     rotation: 0
     state: enabled
+- name: epy_block_6_0_0_0
+  id: epy_block
+  parameters:
+    _source_code: "\"\"\"\nTagged Stream Cropper:\nReference : https://dsp.stackexchange.com/questions/80751/gnu-radiotagged-stream-how-to-clip-the-stream-as-packet-length-tag-long\n\
+      \nINPUTS:\n    - in_sig[0]: IQ complex stream\nOUTPUT:\n    - out_sig[0]: IQ\
+      \ complex stream\n\"\"\"\n\nimport numpy as np\nfrom gnuradio import gr\nimport\
+      \ pmt\n\nclass my_basic_adder_block(gr.basic_block):\n    def __init__(self,tag_name\
+      \ = 'packet_len', len = 12):\n        gr.basic_block.__init__(self,\n      \
+      \                          name=\"Tagged Stream Cropper\",\n               \
+      \                 in_sig  = [np.complex64],\n                              \
+      \  out_sig = [np.complex64])\n\n        self.previous_tag_n_remainder = 0\n\
+      \        self.tag_name                 = tag_name\n        self.set_tag_propagation_policy(gr.TPP_DONT)\n\
+      \        self.len = len\n\n    def general_work(self, input_items, output_items):\n\
+      \        len_out = len(output_items[0])\n\n        # DO PROCESSING\n       \
+      \ out_produced = 0 # output produced \n\n        #-> Write the remaining data\
+      \ of the previous tag\n        if self.previous_tag_n_remainder > 0: \n    \
+      \        if self.previous_tag_n_remainder < len_out: # if the length of the\
+      \ input items is sufficient to write the remainder of the previous tag items\
+      \ \n                output_items[0][:self.previous_tag_n_remainder] = input_items[0][:self.previous_tag_n_remainder]\
+      \ #write to output \n                out_produced                          \
+      \         += self.previous_tag_n_remainder                  #inccrease the number\
+      \ of item produced\n                self.previous_tag_n_remainder = 0      \
+      \                                                          #reset the counter\
+      \ \n                # the RETURN is at the end of the work()\n\n           \
+      \ else: # self.previous_tag_n_remainder >= len_out\n                output_items[0][:len_out]\
+      \      = input_items[0][:len_out]\n                self.previous_tag_n_remainder\
+      \ -= len_out\n                self.consume(0, len_out)\n                return\
+      \ len_out\n\n        # READ TAGS AND PARSE THE RECEIVED STREAM\n        tags\
+      \ = self.get_tags_in_window(0, out_produced, len_out)\n\n        #if there exist\
+      \ tag\n        if len(tags) > 0:\n            #for each tag apply\n        \
+      \    for tag in tags:\n                tag_name   = pmt.to_python(tag.key) \
+      \           # packet_tag\n                tag_len    = self.len          # packet_len\n\
+      \                tag_pos    = tag.offset - self.nitems_read(0)  # packet_position_index\n\
+      \                if tag_name == self.tag_name:       #check if the tag name\
+      \ is appropriate\n                    print(\"[TX] Cropper : Tag found at position\
+      \ {} with length {}\".format(tag_pos,tag_len))\n                    if tag_pos\
+      \ + tag_len < len_out: # if all the elements correspding to the \"tag\" are\
+      \ included in the input_items\n\n                        # write the elements\
+      \ to the output\n                        output_items[0][out_produced:(out_produced+tag_len)]\
+      \ = input_items[0][tag_pos:(tag_pos+tag_len)]\n\n                        # add\
+      \ tag to the corresponding start point                     \n              \
+      \          self.add_item_tag(0,                                   # Write to\
+      \ output port 0\n                                         self.nitems_written(0)+out_produced,\
+      \  # Index of the tag in absolute terms\n                                  \
+      \       tag.key,                              # Key of the tag\n           \
+      \                              tag.value                             # Value\
+      \ of the tag\n                                         )\n                 \
+      \       #increase the number of output element produced counter\n          \
+      \              out_produced += tag_len\n\n                    else: #tag_pos+tag_len\
+      \ >= len_out:\n                        n_item_to_wrt = len_out - tag_pos\n \
+      \                       output_items[0][out_produced:(out_produced + n_item_to_wrt)]\
+      \ = input_items[0][tag_pos:(tag_pos+n_item_to_wrt)]\n\n                    \
+      \    self.add_item_tag(0,                                     # Write to output\
+      \ port 0\n                                          self.nitems_written(0)+out_produced,\
+      \   # Index of the tag in absolute terms\n                                 \
+      \         tag.key,                               # Key of the tag\n        \
+      \                                  tag.value                              #\
+      \ Value of the tag\n                                          )\n\n        \
+      \                self.previous_tag_n_remainder = tag_len - n_item_to_wrt\n \
+      \                       out_produced                 += n_item_to_wrt\n    \
+      \                    self.consume(0,len_out)\n                        return\
+      \ out_produced\n\n        #if there is no tag exits\n        self.consume(0,len_out)\n\
+      \n        #recall that the first \"if\" state is producing element!\n      \
+      \  return out_produced\n\n# \"\"\"\n# Preamble removal block\n# Correlation\
+      \ method\n# \"\"\"\n\n# import numpy as np\n# from gnuradio import gr\n# import\
+      \ pmt\n\n# class Preamble_Remover(gr.basic_block):\n#     def __init__(self,\
+      \ SF=9, preamble_len = 6):\n#         gr.basic_block.__init__(self,\n#     \
+      \        name=\"LoRa Preamble Remover\",\n#             in_sig=[(np.complex64)],\n\
+      #             out_sig=[(np.complex64)])\n#         self.SF = SF\n\n#     def\
+      \ forecast(self, noutput_items, ninputs) :\n#         ninput_items_required\
+      \ = [1]*ninputs #ninput_items_required[i] is the number of items that will be\
+      \ consumed on input port i\n#         return ninput_items_required\n\n#    \
+      \ def general_work(self, input_items, output_items):\n\n#         #buffer references\n\
+      #         in0 = input_items[0] #input signal\n\n#         tags = self.get_tags_in_window(0,\
+      \ 0, len(input_items[0]))\n#         for tag in tags:\n#             key = pmt.to_python(tag.key)\
+      \ # convert from PMT to python string\n#             value = pmt.to_python(tag.value)\
+      \ # Note that the type(value) can be several things, it depends what PMT type\
+      \ it was\n#             print('key:', key)\n#             print('value:', value,\
+      \ type(value))\n#             print('')\n#             croppedInput = in0[int(value):]\n\
+      #             output_items[0][0:len(in0)] = croppedInput[:len(output_items[0])]\n\
+      #             self.consume(0, len(in0[:len(output_items[0])]))\n#         return\
+      \ len(in0[:len(output_items[0])])"
+    affinity: ''
+    alias: ''
+    comment: ''
+    len: preamble_nitems
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    tag_name: '"threshold_exceeded"'
+  states:
+    _io_cache: ('Tagged Stream Cropper', 'my_basic_adder_block', [('tag_name', "'packet_len'"),
+      ('len', '12')], [('0', 'complex', 1)], [('0', 'complex', 1)], '', ['len', 'tag_name'])
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [528, 1260.0]
+    rotation: 0
+    state: disabled
 - name: epy_block_6_0_0_0_0_0
   id: epy_block
   parameters:
@@ -1940,7 +2039,7 @@ blocks:
     bus_structure: null
     coordinate: [560, 1716.0]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: epy_block_9
   id: epy_block
   parameters:
@@ -1966,16 +2065,17 @@ blocks:
       \ threshold_in0[0][0])\n                self.state = 1\n                tag_index\
       \ = self.nitems_read(0) + threshold_in0[0][0]\n                # print(self.nitems_read(0),\
       \ threshold_in0[0][0])\n                self.add_item_tag(0,tag_index,  pmt.intern(\"\
-      threshold_exceeded\"),  pmt.intern(str(self.preamble_nitems)))\n           \
-      \     self.last_tag = tag_index\n                self.items_written0_old = self.nitems_written(0)\n\
-      \                # # # debug\n                # vect = np.arange(0,len(in0))\n\
-      \                # plt.plot(vect, np.real(in0))\n                # plt.axvline(threshold_in0[0][0],\
-      \ 0, 1, color = \"red\", label = \"Corr peak idx\")\n                # # plt.specgram(in0,\
-      \ NFFT=64, Fs=32, noverlap=8)\n                # plt.show()\n              \
-      \  \n\n        if self.state == 1 :\n            if self.nitems_written(0) -\
-      \ self.items_written0_old > self.payload_nitems*2:\n                # print(\"\
-      Reset\")\n                self.state = 0\n            pass\n\n        output_items[0][:]\
-      \ = in0\n        return len(output_items[0])\n"
+      threshold_exceeded\"),  pmt.intern(str(self.preamble_nitems + self.payload_nitems\
+      \ + 1000)))\n                self.last_tag = tag_index\n                self.items_written0_old\
+      \ = self.nitems_written(0)\n                # # # debug\n                # vect\
+      \ = np.arange(0,len(in0))\n                # plt.plot(vect, np.real(in0))\n\
+      \                # plt.axvline(threshold_in0[0][0], 0, 1, color = \"red\", label\
+      \ = \"Corr peak idx\")\n                # # plt.specgram(in0, NFFT=64, Fs=32,\
+      \ noverlap=8)\n                # plt.show()\n                \n\n        if\
+      \ self.state == 1 :\n            if self.nitems_written(0) - self.items_written0_old\
+      \ > self.payload_nitems*2:\n                # print(\"Reset\")\n           \
+      \     self.state = 0\n            pass\n\n        output_items[0][:] = in0\n\
+      \        return len(output_items[0])\n"
     affinity: ''
     alias: ''
     comment: ''
@@ -2021,7 +2121,7 @@ blocks:
       \ = 0\n        self.set_output_multiple(self.preamble_nitems + self.payload_nitems\
       \ + 1000)\n        # self.set_history(4224+1)\n\n    def work(self, input_items,\
       \ output_items):\n\n        in0 = input_items[0]\n        # fig, axs = plt.subplots(3)\n\
-      \        # axs[0].specgram(in0, NFFT=64, Fs=32, noverlap=8)\n        # axs[0].plot(np.arange(0,\
+      \        # # axs[0].specgram(in0, NFFT=64, Fs=32, noverlap=8)\n        # axs[0].plot(np.arange(0,\
       \ len(in0)), in0)\n        # axs[2].specgram(in0, NFFT=64, Fs=32, noverlap=8)\n\
       \        # plt.show()\n        \n        # Preamble creation\n        preamble_up\
       \ = np.reshape(modulate_vect(self.SF, [0]*self.preamble_len, 1, 1), -1)    \
@@ -2034,17 +2134,17 @@ blocks:
       \            # print(corr_max)\n        if corr_max > self.threshold :\n   \
       \         # print(\"yes\")\n            # print(\"corr_max_idx\", corr_max_idx)\n\
       \            # print(\"len\", len(in0))\n            self.state = 1\n      \
-      \      tag_index = self.nitems_written(0) + corr_max_idx #+ len(preamble)\n\
-      \            self.add_item_tag(0,tag_index,  pmt.intern(\"payload_begin\"),\
-      \  pmt.intern(str(self.payload_nitems)))\n            # self.add_item_tag(0,tag_index,\
+      \      tag_index = self.nitems_written(0) + corr_max_idx + len(preamble)\n \
+      \           self.add_item_tag(0,tag_index,  pmt.intern(\"payload_begin\"), \
+      \ pmt.intern(str(self.payload_nitems)))\n            # self.add_item_tag(0,tag_index,\
       \  pmt.intern(\"payload_begin\"),  pmt.intern(str(self.preamble_nitems)))\n\
       \            self.items_written0_old = self.nitems_written(0)\n\n          \
-      \  vect = np.arange(0,len(in0))\n            plt.plot(vect, np.abs(in0))\n \
-      \           plt.axvline(corr_max_idx, 0, 1, color = \"red\", label = \"Corr\
+      \  # vect = np.arange(0,len(in0))\n            # plt.plot(vect, np.abs(in0))\n\
+      \            # plt.axvline(corr_max_idx, 0, 1, color = \"red\", label = \"Corr\
       \ peak idx\")\n            # fig, axs = plt.subplots(3)\n            # axs[0].specgram(in0,\
       \ NFFT=64, Fs=32, noverlap=8)\n            # axs[0].plot(np.arange(0, len(in0)),\
       \ in0)\n            # axs[1].plot(np.arange(0, len(corr)), corr)\n         \
-      \   # axs[2].specgram(in0, NFFT=64, Fs=32, noverlap=8)\n            plt.show()\
+      \   # axs[2].specgram(in0, NFFT=64, Fs=32, noverlap=8)\n            # plt.show()\
       \   \n\n\n        output_items[0][:] = in0[:len(output_items[0])]\n        return\
       \ len(output_items[0])\n"
     affinity: ''
@@ -2054,7 +2154,7 @@ blocks:
     minoutbuf: '0'
     payload_nitems: payload_nitems
     preamble_len: preamble_len
-    threshold: int(5e6)
+    threshold: int(5e4)
   states:
     _io_cache: ('LoRa Correlation Sync', 'blk', [('preamble_len', '6'), ('payload_nitems',
       '1'), ('threshold', '10000'), ('SF', '1')], [('0', 'complex', 1)], [('0', 'complex',
@@ -2065,7 +2165,7 @@ blocks:
     bus_structure: null
     coordinate: [784, 1436.0]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: epy_block_9_2
   id: epy_block
   parameters:
@@ -2463,7 +2563,7 @@ blocks:
     bus_structure: null
     coordinate: [1464, 452.0]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: uhd_usrp_source_0
   id: uhd_usrp_source
   parameters:
@@ -3077,7 +3177,7 @@ blocks:
     dc_offs_enb9: default
     dev_addr: '"addr=192.168.10.2"'
     dev_args: ''
-    gain0: '20'
+    gain0: '10'
     gain1: '0'
     gain10: '0'
     gain11: '0'
@@ -3335,7 +3435,7 @@ blocks:
     bus_structure: null
     coordinate: [840, 800.0]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: virtual_sink_0
   id: virtual_sink
   parameters:
@@ -3374,7 +3474,7 @@ blocks:
     bus_structure: null
     coordinate: [1464, 1420.0]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: virtual_sink_3
   id: virtual_sink
   parameters:
@@ -3439,7 +3539,7 @@ blocks:
     bus_structure: null
     coordinate: [80, 1716.0]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: virtual_source_3
   id: virtual_source
   parameters:
@@ -3479,6 +3579,7 @@ connections:
 - [blocks_tagged_stream_align_0, '0', epy_block_7_0, '0']
 - [blocks_tagged_stream_align_1, '0', epy_block_6_0, '0']
 - [blocks_tagged_stream_align_1_0, '0', epy_block_6_0_0, '0']
+- [blocks_tagged_stream_align_1_0, '0', epy_block_6_0_0_0, '0']
 - [blocks_tagged_stream_align_1_0_1, '0', epy_block_6_0_0_1, '0']
 - [blocks_vector_source_x_0, '0', blocks_file_sink_0_3_0_0_0, '0']
 - [blocks_vector_source_x_0, '0', virtual_sink_0, '0']
@@ -3506,13 +3607,14 @@ connections:
 - [epy_block_6_0, '0', epy_block_4, '0']
 - [epy_block_6_0, '0', virtual_sink_2, '0']
 - [epy_block_6_0_0, '0', blocks_file_sink_0_1_0_0, '0']
-- [epy_block_6_0_0, '0', epy_block_12, '0']
 - [epy_block_6_0_0, '0', epy_block_9_0, '0']
+- [epy_block_6_0_0_0, '0', epy_block_12, '0']
 - [epy_block_6_0_0_0_0_0, '0', blocks_vector_to_stream_1, '0']
 - [epy_block_6_0_0_1, '0', blocks_file_sink_0_3, '0']
 - [epy_block_6_0_0_1, '0', epy_block_11, '0']
 - [epy_block_7_0, '0', blocks_stream_mux_0_0, '1']
 - [epy_block_7_0, '0', uhd_usrp_sink_0, '0']
+- [epy_block_7_0, '0', virtual_sink_3, '0']
 - [epy_block_8, '0', virtual_sink_1, '0']
 - [epy_block_8_0, '0', blocks_file_sink_0_3_0_0_0_0_0, '0']
 - [epy_block_8_0, '0', epy_block_0, '0']

@@ -47,7 +47,7 @@ class blk(gr.sync_block):  # other base classes are basic_block, decim_block, in
 
         in0 = input_items[0]
         # fig, axs = plt.subplots(3)
-        # axs[0].specgram(in0, NFFT=64, Fs=32, noverlap=8)
+        # # axs[0].specgram(in0, NFFT=64, Fs=32, noverlap=8)
         # axs[0].plot(np.arange(0, len(in0)), in0)
         # axs[2].specgram(in0, NFFT=64, Fs=32, noverlap=8)
         # plt.show()
@@ -69,20 +69,20 @@ class blk(gr.sync_block):  # other base classes are basic_block, decim_block, in
             # print("corr_max_idx", corr_max_idx)
             # print("len", len(in0))
             self.state = 1
-            tag_index = self.nitems_written(0) + corr_max_idx #+ len(preamble)
+            tag_index = self.nitems_written(0) + corr_max_idx + len(preamble)
             self.add_item_tag(0,tag_index,  pmt.intern("payload_begin"),  pmt.intern(str(self.payload_nitems)))
             # self.add_item_tag(0,tag_index,  pmt.intern("payload_begin"),  pmt.intern(str(self.preamble_nitems)))
             self.items_written0_old = self.nitems_written(0)
 
-            vect = np.arange(0,len(in0))
-            plt.plot(vect, np.abs(in0))
-            plt.axvline(corr_max_idx, 0, 1, color = "red", label = "Corr peak idx")
+            # vect = np.arange(0,len(in0))
+            # plt.plot(vect, np.abs(in0))
+            # plt.axvline(corr_max_idx, 0, 1, color = "red", label = "Corr peak idx")
             # fig, axs = plt.subplots(3)
             # axs[0].specgram(in0, NFFT=64, Fs=32, noverlap=8)
             # axs[0].plot(np.arange(0, len(in0)), in0)
             # axs[1].plot(np.arange(0, len(corr)), corr)
             # axs[2].specgram(in0, NFFT=64, Fs=32, noverlap=8)
-            plt.show()   
+            # plt.show()   
 
 
         output_items[0][:] = in0[:len(output_items[0])]
