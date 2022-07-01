@@ -93,6 +93,18 @@ blocks:
     coordinate: [1224, 124.0]
     rotation: 0
     state: enabled
+- name: corr_threshold
+  id: variable
+  parameters:
+    comment: ''
+    value: int(8e3)
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [768, 1204.0]
+    rotation: 0
+    state: true
 - name: os_factor
   id: variable
   parameters:
@@ -177,6 +189,18 @@ blocks:
     coordinate: [856, 36.0]
     rotation: 0
     state: enabled
+- name: threshold
+  id: variable
+  parameters:
+    comment: ''
+    value: '0.1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [648, 1200.0]
+    rotation: 0
+    state: true
 - name: blocks_file_sink_0
   id: blocks_file_sink
   parameters:
@@ -212,7 +236,7 @@ blocks:
     bus_structure: null
     coordinate: [608, 884.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: blocks_file_sink_0_1_0
   id: blocks_file_sink
   parameters:
@@ -228,7 +252,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [2008, 1452.0]
+    coordinate: [2288, 1504.0]
     rotation: 0
     state: disabled
 - name: blocks_file_sink_0_1_0_0
@@ -284,7 +308,7 @@ blocks:
     bus_structure: null
     coordinate: [536, 652.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: blocks_file_sink_0_3
   id: blocks_file_sink
   parameters:
@@ -320,7 +344,7 @@ blocks:
     bus_structure: null
     coordinate: [688, 156.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: blocks_file_sink_0_3_0_0_0_0
   id: blocks_file_sink
   parameters:
@@ -374,7 +398,7 @@ blocks:
     bus_structure: null
     coordinate: [680, 316.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: blocks_message_strobe_0
   id: blocks_message_strobe
   parameters:
@@ -391,7 +415,7 @@ blocks:
     bus_structure: null
     coordinate: [80, 236.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: blocks_multiply_const_vxx_0
   id: blocks_multiply_const_vxx
   parameters:
@@ -532,7 +556,7 @@ blocks:
     bus_structure: null
     coordinate: [360, 608.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: blocks_tagged_stream_align_0
   id: blocks_tagged_stream_align
   parameters:
@@ -550,7 +574,7 @@ blocks:
     bus_structure: null
     coordinate: [864, 588.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: blocks_tagged_stream_align_1
   id: blocks_tagged_stream_align
   parameters:
@@ -680,7 +704,7 @@ blocks:
     bus_structure: null
     coordinate: [712, 592.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: blocks_vector_to_stream_1
   id: blocks_vector_to_stream
   parameters:
@@ -698,7 +722,7 @@ blocks:
     bus_structure: null
     coordinate: [360, 640.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: channels_channel_model_0
   id: channels_channel_model
   parameters:
@@ -836,7 +860,7 @@ blocks:
     bus_structure: null
     coordinate: [520, 396.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: epy_block_1
   id: epy_block
   parameters:
@@ -1036,12 +1060,12 @@ blocks:
       \ preamble_down[0:2.25*M]\n        self.set_output_multiple(len(self.preamble))\n\
       \n    def work(self, input_items, output_items):\n\n        in0 = input_items[0][:len(self.preamble)]\n\
       \n        h_est = in0.T*self.preamble# https://www.youtube.com/watch?v=XCe0xanaPFo\n\
-      \        print(\"[RX] Channel : h^est =\",h_est[0])\n        \n        # fig,\
-      \ axs = plt.subplots(5)\n        # axs[0].specgram(in0, NFFT=64, Fs=32, noverlap=8)\n\
-      \        # axs[1].specgram(self.preamble, NFFT=64, Fs=32, noverlap=8)\n    \
-      \    # axs[2].plot(in0)\n        # axs[3].plot(self.preamble)\n        # # axs[4].plot(np.arange(0,len(h)),np.real(h),np.arange(0,len(h)),\
-      \ np.imag(h))\n        # # axs[4].set_ylim([-1,1])\n        # plt.show()\n\n\
-      \        \n        output_items[0][:len(in0)] = in0\n        return len(in0)\n"
+      \        print(\"[RX] Channel : h^est =\",h_est[0])\n        \n        fig,\
+      \ axs = plt.subplots(4)\n        axs[0].specgram(in0, NFFT=64, Fs=32, noverlap=8)\n\
+      \        axs[1].specgram(self.preamble, NFFT=64, Fs=32, noverlap=8)\n      \
+      \  axs[2].plot(in0)\n        axs[3].plot(self.preamble)\n        # axs[4].plot(np.arange(0,len(h)),np.real(h),np.arange(0,len(h)),\
+      \ np.imag(h))\n        # axs[4].set_ylim([-1,1])\n        plt.show()\n\n   \
+      \     \n        output_items[0][:len(in0)] = in0\n        return len(in0)\n"
     affinity: ''
     alias: ''
     comment: ''
@@ -1128,7 +1152,7 @@ blocks:
     bus_structure: null
     coordinate: [208, 404.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: epy_block_1_1
   id: epy_block
   parameters:
@@ -1187,7 +1211,7 @@ blocks:
     bus_structure: null
     coordinate: [360, 404.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: epy_block_2
   id: epy_block
   parameters:
@@ -1309,7 +1333,7 @@ blocks:
     bus_structure: null
     coordinate: [16, 564.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: epy_block_4
   id: epy_block
   parameters:
@@ -1382,7 +1406,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [2024, 1612.0]
+    coordinate: [2264, 1600.0]
     rotation: 0
     state: disabled
 - name: epy_block_4_0
@@ -1550,7 +1574,7 @@ blocks:
     bus_structure: null
     coordinate: [512, 576.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: epy_block_6_0
   id: epy_block
   parameters:
@@ -1840,7 +1864,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1264, 1260.0]
+    coordinate: [2280, 1416.0]
     rotation: 0
     state: disabled
 - name: epy_block_6_0_0_0_0_0
@@ -1879,7 +1903,7 @@ blocks:
     bus_structure: null
     coordinate: [208, 636.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: epy_block_6_0_0_1
   id: epy_block
   parameters:
@@ -2148,7 +2172,7 @@ blocks:
     bus_structure: null
     coordinate: [1080, 580.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: epy_block_8
   id: epy_block
   parameters:
@@ -2178,7 +2202,7 @@ blocks:
     bus_structure: null
     coordinate: [672, 404.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: epy_block_8_0
   id: epy_block
   parameters:
@@ -2232,7 +2256,7 @@ blocks:
       \ + self.payload_nitems + 1000)\n\n    def work(self, input_items, output_items):\n\
       \n        in0 = input_items[0][:len(output_items[0])]\n\n\n        if self.state\
       \ == 0 :\n            threshold_in0 = np.where(in0 > self.threshold)\n     \
-      \       if len(threshold_in0[0]) > 0:\n                print(\"[RX] thresh.\
+      \       if len(threshold_in0[0]) > 0:\n                print(\"\\n[RX] thresh.\
       \ : Power threshold exceeded\")\n                # print(\"fast : \", threshold_in0[0][0])\n\
       \                self.state = 1\n                tag_index = self.nitems_read(0)\
       \ + threshold_in0[0][0]\n                # print(self.nitems_read(0), threshold_in0[0][0])\n\
@@ -2255,7 +2279,7 @@ blocks:
     minoutbuf: '0'
     payload_nitems: payload_nitems*os_factor
     preamble_nitems: preamble_nitems*os_factor
-    threshold: '0.1'
+    threshold: threshold
   states:
     _io_cache: ('LoRa Threshold Sync', 'blk', [('preamble_nitems', '24'), ('payload_nitems',
       '1'), ('threshold', '10000')], [('0', 'complex', 1)], [('0', 'complex', 1)],
@@ -2327,7 +2351,7 @@ blocks:
     minoutbuf: '0'
     payload_nitems: payload_nitems
     preamble_len: preamble_len
-    threshold: int(5e4)
+    threshold: corr_threshold
   states:
     _io_cache: ('LoRa Correlation Sync Payload', 'blk', [('preamble_len', '6'), ('payload_nitems',
       '1'), ('threshold', '10000'), ('SF', '1')], [('0', 'complex', 1)], [('0', 'complex',
@@ -2398,7 +2422,7 @@ blocks:
     minoutbuf: '0'
     payload_nitems: payload_nitems
     preamble_len: preamble_len
-    threshold: int(5e4)
+    threshold: corr_threshold
   states:
     _io_cache: ('LoRa Correlation Sync Preamble', 'blk', [('preamble_len', '6'), ('payload_nitems',
       '1'), ('threshold', '10000'), ('SF', '1')], [('0', 'complex', 1)], [('0', 'complex',
@@ -2482,7 +2506,7 @@ blocks:
     bus_structure: null
     coordinate: [512, 244.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: pdu_random_pdu_0
   id: pdu_random_pdu
   parameters:
@@ -2501,7 +2525,7 @@ blocks:
     bus_structure: null
     coordinate: [288, 220.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: qtgui_sink_x_0
   id: qtgui_sink_x
   parameters:
@@ -2528,7 +2552,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [2176, 1248.0]
+    coordinate: [2296, 1288.0]
     rotation: 0
     state: disabled
 - name: uhd_usrp_sink_0
@@ -2807,7 +2831,7 @@ blocks:
     bus_structure: null
     coordinate: [1464, 452.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: uhd_usrp_source_0
   id: uhd_usrp_source
   parameters:
@@ -3692,7 +3716,7 @@ blocks:
     bus_structure: null
     coordinate: [696, 244.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: virtual_sink_1
   id: virtual_sink
   parameters:
@@ -3705,7 +3729,7 @@ blocks:
     bus_structure: null
     coordinate: [808, 404.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: virtual_sink_2
   id: virtual_sink
   parameters:
@@ -3731,7 +3755,7 @@ blocks:
     bus_structure: null
     coordinate: [1384, 628.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: virtual_sink_4
   id: virtual_sink
   parameters:
@@ -3757,7 +3781,7 @@ blocks:
     bus_structure: null
     coordinate: [64, 404.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: virtual_source_1
   id: virtual_source
   parameters:
@@ -3770,7 +3794,7 @@ blocks:
     bus_structure: null
     coordinate: [16, 636.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: virtual_source_2
   id: virtual_source
   parameters:
@@ -3796,7 +3820,7 @@ blocks:
     bus_structure: null
     coordinate: [392, 1044.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: virtual_source_3_0
   id: virtual_source
   parameters:

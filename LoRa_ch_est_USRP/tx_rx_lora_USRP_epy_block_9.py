@@ -40,7 +40,7 @@ class blk(gr.sync_block):  # other base classes are basic_block, decim_block, in
         if self.state == 0 :
             threshold_in0 = np.where(in0 > self.threshold)
             if len(threshold_in0[0]) > 0:
-                print("[RX] thresh. : Power threshold exceeded")
+                print("\n[RX] thresh. : Power threshold exceeded")
                 # print("fast : ", threshold_in0[0][0])
                 self.state = 1
                 tag_index = self.nitems_read(0) + threshold_in0[0][0]

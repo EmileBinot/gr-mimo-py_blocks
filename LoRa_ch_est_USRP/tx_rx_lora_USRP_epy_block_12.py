@@ -46,14 +46,14 @@ class blk(gr.sync_block):  # other base classes are basic_block, decim_block, in
         h_est = in0.T*self.preamble# https://www.youtube.com/watch?v=XCe0xanaPFo
         print("[RX] Channel : h^est =",h_est[0])
         
-        # fig, axs = plt.subplots(5)
-        # axs[0].specgram(in0, NFFT=64, Fs=32, noverlap=8)
-        # axs[1].specgram(self.preamble, NFFT=64, Fs=32, noverlap=8)
-        # axs[2].plot(in0)
-        # axs[3].plot(self.preamble)
-        # # axs[4].plot(np.arange(0,len(h)),np.real(h),np.arange(0,len(h)), np.imag(h))
-        # # axs[4].set_ylim([-1,1])
-        # plt.show()
+        fig, axs = plt.subplots(4)
+        axs[0].specgram(in0, NFFT=64, Fs=32, noverlap=8)
+        axs[1].specgram(self.preamble, NFFT=64, Fs=32, noverlap=8)
+        axs[2].plot(in0)
+        axs[3].plot(self.preamble)
+        # axs[4].plot(np.arange(0,len(h)),np.real(h),np.arange(0,len(h)), np.imag(h))
+        # axs[4].set_ylim([-1,1])
+        plt.show()
 
         
         output_items[0][:len(in0)] = in0
