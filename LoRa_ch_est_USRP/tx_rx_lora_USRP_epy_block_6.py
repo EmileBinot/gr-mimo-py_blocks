@@ -13,22 +13,25 @@ import pmt
 class blk(gr.sync_block):  # other base classes are basic_block, decim_block, interp_block
     """Embedded Python Block example - a simple multiply const"""
 
-    def __init__(self, preamble_nitems = 4224, payload_nitems = 8192):  # only default arguments here
+    def __init__(self, preamble_nitems = 4224, payload_nitems = 8192, padding = 100):  # only default arguments here
         """arguments to this function show up as parameters in GRC"""
-
-        self.payload_nitems = payload_nitems
-        self.preamble_nitems = preamble_nitems
-        self.frame_counter = 0
         gr.sync_block.__init__(
             self,
             name='LoRa Frame Constructor',   # will show up in GRC
-            in_sig=[(np.complex64,self.preamble_nitems),(np.complex64,self.payload_nitems)],
-            out_sig=[(np.complex64,self.preamble_nitems+self.payload_nitems)]
+            in_sig=[(np.complex64,preamble_nitems),(np.complex64,payload_nitems)],
+            out_sig=[(np.complex64,padding+preamble_nitems+payload_nitems)]
         )
+        self.payload_nitems = payload_nitems
+        self.preamble_nitems = preamble_nitems
+        self.frame_counter = 0
+        self.padding = padding
+
         
     def work(self, input_items, output_items):
         if len(input_items[0][0]) == self.preamble_nitems and len(input_items[1][0]) == self.payload_nitems :
-            output_items[0][:] = np.concatenate((input_items[0],input_items[1]),axis=1)
+            frame = np.concatenate((input_items[0],input_items[1]),axis=1)
+            output_items[0][:] = np.concatenate((0.1*np.ones((1,self.padding)), frame),axis=1)
+            # print(np.shape(output_items[0][:]))
             # TAGS
             key = pmt.intern("tx_sob")
             value = pmt.from_bool(True)
@@ -40,7 +43,7 @@ class blk(gr.sync_block):  # other base classes are basic_block, decim_block, in
             # tx_time tag is optional : https://discuss-gnuradio.gnu.narkive.com/c2r83OZW/uhd-usrp-sink-stream-tagging
             # TAGS
             key = pmt.intern("packet_len")
-            value = pmt.from_long(self.preamble_nitems+self.payload_nitems)
+            value = pmt.from_long(self.preamble_nitems+self.payload_nitems+self.padding)
             self.add_item_tag(0, # Write to output port 0
                     self.nitems_written(0), # Index of the tag in absolute terms
                     key, # Key of the tag

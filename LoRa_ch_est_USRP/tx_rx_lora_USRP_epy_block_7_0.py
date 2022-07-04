@@ -11,7 +11,7 @@ from gnuradio import gr
 import pmt
 
 class blk(gr.sync_block):
-    def __init__(self, preamble_nitems = 4224, payload_nitems = 8192):
+    def __init__(self, preamble_nitems = 4224, payload_nitems = 8192, padding = 10):
         gr.sync_block.__init__(
             self,
             name='LoRa EoB Tagger',
@@ -21,6 +21,7 @@ class blk(gr.sync_block):
         self.payload_nitems = payload_nitems
         self.preamble_nitems = preamble_nitems
         self.frame_counter = 0
+        self.padding = padding
 
     def work(self, input_items, output_items):
 
@@ -30,7 +31,7 @@ class blk(gr.sync_block):
                 key = pmt.intern("tx_eob")
                 value = pmt.from_bool(True)
                 self.add_item_tag(0, # Write to output port 0
-                        self.nitems_written(0) + self.payload_nitems+self.preamble_nitems-1, # Index of the tag in absolute terms
+                        self.nitems_written(0) + self.padding + self.payload_nitems + self.preamble_nitems-1, # Index of the tag in absolute terms
                         key, # Key of the tag
                         value # Value of the tag
                 )
