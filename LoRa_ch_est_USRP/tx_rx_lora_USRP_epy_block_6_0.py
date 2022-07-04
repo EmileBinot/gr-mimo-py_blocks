@@ -54,7 +54,7 @@ class my_basic_adder_block(gr.basic_block):
                 tag_len    = int(pmt.to_python(tag.value))          # packet_len
                 tag_pos    = tag.offset - self.nitems_read(0)  # packet_position_index
                 if tag_name == self.tag_name:       #check if the tag name is appropriate
-                    # print("[TX] Cropper : Tag found at position {} with length {}".format(tag_pos,tag_len))
+                    print("[RX] Cropper : Payload Tag found at position {} with length {}".format(tag_pos,tag_len))
                     if tag_pos + tag_len < len_out: # if all the elements correspding to the "tag" are included in the input_items
 
                         # write the elements to the output

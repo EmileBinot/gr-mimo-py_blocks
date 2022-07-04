@@ -72,6 +72,6 @@ class Demodulation(gr.sync_block):
 
         # # debug
         # print("\n--- GENERAL WORK : DEMODULATION ---")
-        # print("[RX] Demod.  : mean max (should be 2**SF):", np.mean(max_array))
-        # print("[RX] Demod.  : nreceived symbols:", i)
+        print("[RX] Demod.  : mean max (should be 2**SF):", np.mean(max_array))
+        print("[RX] Demod.  : nreceived symbols:", i)
         return len(output_items[0])

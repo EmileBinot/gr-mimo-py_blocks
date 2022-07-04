@@ -46,44 +46,28 @@ class blk(gr.sync_block):  # other base classes are basic_block, decim_block, in
     def work(self, input_items, output_items):
 
         in0 = input_items[0]
-        # fig, axs = plt.subplots(3)
-        # # axs[0].specgram(in0, NFFT=64, Fs=32, noverlap=8)
-        # axs[0].plot(np.arange(0, len(in0)), in0)
-        # axs[2].specgram(in0, NFFT=64, Fs=32, noverlap=8)
-        # plt.show()
         
         # Preamble creation
-        preamble_up = np.reshape(modulate_vect(self.SF, [0]*self.preamble_len, 1, 1), -1)       # generate preamble_len upchirps
-        preamble_down = np.reshape(np.conjugate(modulate_vect(self.SF, [0]*3, 1, 1)), -1)       # generate 3 downchirps
-        preamble = np.concatenate((preamble_up, preamble_down[0:int(2.25*pow(2,self.SF))]))     # concatenate preamble_up and preamble_down[0:2.25*M]
+        preamble_up = np.reshape(modulate_vect(self.SF, [0]*2, 1, 1), -1)       # generate preamble_len upchirps
+        preamble_down = np.reshape((modulate_vect(self.SF, [0]*3, 1, -1)), -1)[0:int(2.25*pow(2,self.SF))]       # generate 3 downchirps
+        preamble = np.concatenate((preamble_up, preamble_down))     # concatenate preamble_up and preamble_down[0:2.25*M]
     
-        corr = np.abs(np.correlate(in0, preamble))**2
-        corr_max = np.max(corr)
-        corr_max_idx = np.argmax(corr)
-        if corr_max > 0.5 :
-            # print(corr_max)
-            pass
-            # print(corr_max)
-        if corr_max > self.threshold :
-            print("[RX] Correl. : Correlation threshold exceeded")
-            # print("yes")
-            # print("corr_max_idx", corr_max_idx)
-            # print("len", len(in0))
-            self.state = 1
-            tag_index = self.nitems_written(0) + corr_max_idx + len(preamble)
-            self.add_item_tag(0,tag_index,  pmt.intern("payload_begin"),  pmt.intern(str(self.payload_nitems)))
-            # self.add_item_tag(0,tag_index,  pmt.intern("payload_begin"),  pmt.intern(str(self.preamble_nitems)))
-            self.items_written0_old = self.nitems_written(0)
+        corr = np.abs(np.correlate(in0, preamble_down))**2
+        corr_max = np.max(corr[2800:3400])
+        corr_max_idx = np.argmax(corr[2800:3400]) + 2800
 
-            # vect = np.arange(0,len(in0))
-            # plt.plot(vect, np.abs(in0))
-            # plt.axvline(corr_max_idx, 0, 1, color = "red", label = "Corr peak idx")
-            # fig, axs = plt.subplots(3)
-            # axs[0].specgram(in0, NFFT=64, Fs=32, noverlap=8)
-            # axs[0].plot(np.arange(0, len(in0)), in0)
-            # axs[1].plot(np.arange(0, len(corr)), corr)
-            # axs[2].specgram(in0, NFFT=64, Fs=32, noverlap=8)
-            # plt.show()   
+        # fig, axs = plt.subplots(5)
+        # axs[0].specgram(in0, NFFT=64, Fs=32, noverlap=8)
+        # axs[1].specgram(in0[corr_max_idx:], NFFT=64, Fs=32, noverlap=8)
+        # axs[2].specgram(in0[corr_max_idx+len(preamble_down):], NFFT=64, Fs=32, noverlap=8)
+        # axs[3].plot(corr)
+        # axs[4].plot(in0)
+        # axs[4].axvline(corr_max_idx, 0, 1, color = "red", label = "Corr peak idx")
+        # plt.show()   
+
+        if corr_max > self.threshold :
+            tag_index = self.nitems_written(0) + corr_max_idx + len(preamble_down)
+            self.add_item_tag(0,tag_index,  pmt.intern("payload_begin"),  pmt.intern(str(self.payload_nitems)))
 
 
         output_items[0][:] = in0[:len(output_items[0])]

@@ -10,7 +10,7 @@ import numpy as np
 from gnuradio import gr
 import math
 import matplotlib.pyplot as plt
-
+import pmt
 
 def modulate_vect(SF, id, os_factor, sign) :
     M  = pow(2,SF)
@@ -25,7 +25,6 @@ class blk(gr.sync_block):  # other base classes are basic_block, decim_block, in
     """Embedded Python Block example - a simple multiply const"""
 
     def __init__(self):  # only default arguments here
-        """arguments to this function show up as parameters in GRC"""
         gr.sync_block.__init__(
             self,
             name='Channel estimator',   # will show up in GRC
@@ -34,23 +33,49 @@ class blk(gr.sync_block):  # other base classes are basic_block, decim_block, in
         )
         self.SF = 9
         self.preamble_len = 6
-        preamble_up = np.reshape(modulate_vect(self.SF, [0]*self.preamble_len, 1, 1), -1)      # generate preamble_len upchirps
-        preamble_down = np.reshape(np.conjugate(modulate_vect(self.SF, [0]*3, 1, 1)), -1)      # generate 3 downchirps
-        self.preamble = np.concatenate((preamble_up, preamble_down[0:int(2.25*pow(2,self.SF))])) # concatenate preamble_up and preamble_down[0:2.25*M]
+        preamble_up = np.reshape(modulate_vect(self.SF, [0]*self.preamble_len, 1, 1), -1)           # generate preamble_len upchirps
+        preamble_down = np.reshape(np.conjugate(modulate_vect(self.SF, [0]*3, 1, 1)), -1)           # generate 3 downchirps
+        self.preamble = np.concatenate((preamble_up, preamble_down[0:int(2.25*pow(2,self.SF))]))    # concatenate preamble_up and preamble_down[0:2.25*M]
         self.set_output_multiple(len(self.preamble))
+        self.message_port_register_out(pmt.intern("h_est"))
+
 
     def work(self, input_items, output_items):
 
         in0 = input_items[0][:len(self.preamble)]
 
-        h_est = in0.T*self.preamble# https://www.youtube.com/watch?v=XCe0xanaPFo
-        print("[RX] Channel : h^est =",h_est[0])
+        # h_est = in0.T*self.preamble# https://www.youtube.com/watch?v=XCe0xanaPFo
+        h_est_LS = in0 / self.preamble
+
+        # h_est_mean = np.mean(h_est)
+        h_est_LS_mean = np.mean(h_est_LS)
+
+        # print("[RX] Channel : h^est =",h_est_mean)
+        print("[RX] Channel : h^estLS =",h_est_LS_mean)
+
+        # Computing MSE :
+        y = in0
+        y_est_LS = self.preamble * h_est_LS_mean
+        mse_LS = np.abs((np.square(y - y_est_LS)).mean(axis=None))
+
+        # y_est = self.preamble * h_est_mean
+        # mse = np.abs((np.square(y - y_est)).mean(axis=None))
         
+        print("[RX] Channel : MSE_LS = ",mse_LS)
+        # print("[RX] Channel : MSE = ",mse)
+
+        # P_pair = pmt.cons(pmt.string_to_symbol("h_est"), pmt.from_complex(h_est_LS_mean))
+        # self.message_port_pub(pmt.intern("h_est"), P_pair)
+        self.message_port_pub(pmt.intern("h_est"), pmt.from_complex(h_est_LS_mean))
+
+
         fig, axs = plt.subplots(4)
-        axs[0].specgram(in0, NFFT=64, Fs=32, noverlap=8)
-        axs[1].specgram(self.preamble, NFFT=64, Fs=32, noverlap=8)
-        axs[2].plot(in0)
-        axs[3].plot(self.preamble)
+        axs[0].specgram(self.preamble, NFFT=64, Fs=32, noverlap=8)
+        axs[0].set_title('X')
+        axs[1].specgram(y, NFFT=64, Fs=32, noverlap=8)
+        axs[1].set_title('Y = H*X+N')
+        axs[2].specgram(y_est_LS, NFFT=64, Fs=32, noverlap=8)
+        axs[2].set_title('Y_est = H_est*X+N')
         # axs[4].plot(np.arange(0,len(h)),np.real(h),np.arange(0,len(h)), np.imag(h))
         # axs[4].set_ylim([-1,1])
         plt.show()

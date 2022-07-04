@@ -48,7 +48,7 @@ class blk(gr.sync_block):  # other base classes are basic_block, decim_block, in
                 self.add_item_tag(0,tag_index,  pmt.intern("threshold_exceeded"),  pmt.intern(str(self.preamble_nitems + self.payload_nitems + 1000)))
                 self.last_tag = tag_index
                 self.items_written0_old = self.nitems_written(0)
-                # # # debug
+                # # # # debug
                 # vect = np.arange(0,len(in0))
                 # plt.plot(vect, np.real(in0))
                 # plt.axvline(threshold_in0[0][0], 0, 1, color = "red", label = "Corr peak idx")
