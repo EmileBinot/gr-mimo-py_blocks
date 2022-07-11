@@ -346,7 +346,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [968, 1276.0]
+    coordinate: [1008, 1204.0]
     rotation: 0
     state: enabled
 - name: blocks_tagged_stream_align_1_0
@@ -1102,14 +1102,15 @@ blocks:
       \ + self.payload_nitems + 1000)\n\n    def work(self, input_items, output_items):\n\
       \n        in0 = input_items[0][:len(output_items[0])]\n\n\n        if self.state\
       \ == 0 :\n            threshold_in0 = np.where(in0 > self.threshold)\n     \
-      \       if len(threshold_in0[0]) > 0:\n                # print(\"fast : \",\
-      \ threshold_in0[0][0])\n                self.state = 1\n                tag_index\
-      \ = self.nitems_read(0) + threshold_in0[0][0] + 0\n                # print(self.nitems_read(0),\
-      \ threshold_in0[0][0])\n                self.add_item_tag(0,tag_index,  pmt.intern(\"\
-      threshold_exceeded\"),  pmt.intern(str(self.preamble_nitems +self.payload_nitems)))\n\
-      \                self.last_tag = tag_index\n                self.items_written0_old\
-      \ = self.nitems_written(0)\n                # # # debug\n                # vect\
-      \ = np.arange(0,len(in0))\n                # plt.plot(vect, np.real(in0))\n\
+      \       if len(threshold_in0[0]) > 0:\n                print(\"\\n[RX] thresh.\
+      \ : Power threshold exceeded\")\n                # print(\"fast : \", threshold_in0[0][0])\n\
+      \                self.state = 1\n                tag_index = self.nitems_read(0)\
+      \ + threshold_in0[0][0]\n                # print(self.nitems_read(0), threshold_in0[0][0])\n\
+      \                self.add_item_tag(0,tag_index,  pmt.intern(\"threshold_exceeded\"\
+      ),  pmt.intern(str(self.preamble_nitems + self.payload_nitems + 1000)))\n  \
+      \              self.last_tag = tag_index\n                self.items_written0_old\
+      \ = self.nitems_written(0)\n                # # # # debug\n                #\
+      \ vect = np.arange(0,len(in0))\n                # plt.plot(vect, np.real(in0))\n\
       \                # plt.axvline(threshold_in0[0][0], 0, 1, color = \"red\", label\
       \ = \"Corr peak idx\")\n                # # plt.specgram(in0, NFFT=64, Fs=32,\
       \ noverlap=8)\n                # plt.show()\n                \n\n        if\
@@ -1153,41 +1154,31 @@ blocks:
       \ decim_block, interp_block\n    \"\"\"Embedded Python Block example - a simple\
       \ multiply const\"\"\"\n\n    def __init__(self,preamble_len = 6, payload_nitems\
       \ = 1, threshold = 10000, SF = 1):  # only default arguments here\n        gr.sync_block.__init__(\n\
-      \            self,\n            name='LoRa Correlation Sync',   # will show\
-      \ up in GRC\n            in_sig=[np.complex64],\n            out_sig=[np.complex64]\n\
+      \            self,\n            name='LoRa Correlation Sync Payload',   # will\
+      \ show up in GRC\n            in_sig=[np.complex64],\n            out_sig=[np.complex64]\n\
       \        )\n        \n        self.preamble_len = preamble_len\n        self.preamble_nitems\
       \ = round(pow(2,SF)*(preamble_len+2.25))\n        self.payload_nitems = payload_nitems\n\
       \        self.threshold = threshold\n        self.SF = SF\n\n        self.state\
       \ = 0 # 0 if searching for preamble, 1 if found\n        self.items_written0_old\
       \ = 0\n        self.set_output_multiple(self.preamble_nitems + self.payload_nitems\
       \ + 1000)\n        # self.set_history(4224+1)\n\n    def work(self, input_items,\
-      \ output_items):\n\n        in0 = input_items[0]\n        # fig, axs = plt.subplots(3)\n\
-      \        # axs[0].specgram(in0, NFFT=64, Fs=32, noverlap=8)\n        # axs[0].plot(np.arange(0,\
-      \ len(in0)), in0)\n        # axs[2].specgram(in0, NFFT=64, Fs=32, noverlap=8)\n\
-      \        # plt.show()\n        \n        # Preamble creation\n        preamble_up\
-      \ = np.reshape(modulate_vect(self.SF, [0]*self.preamble_len, 1, 1), -1)    \
-      \   # generate preamble_len upchirps\n        preamble_down = np.reshape(np.conjugate(modulate_vect(self.SF,\
-      \ [0]*3, 1, 1)), -1)       # generate 3 downchirps\n        preamble = np.concatenate((preamble_up,\
-      \ preamble_down[0:int(2.25*pow(2,self.SF))]))     # concatenate preamble_up\
-      \ and preamble_down[0:2.25*M]\n    \n        corr = np.abs(np.correlate(in0,\
-      \ preamble))**2\n        corr_max = np.max(corr)\n        corr_max_idx = np.argmax(corr)\n\
-      \        if corr_max > 0.5 :\n            print(corr_max)\n            pass\n\
-      \            # print(corr_max)\n        if corr_max > self.threshold :\n   \
-      \         # print(\"yes\")\n            # print(\"corr_max_idx\", corr_max_idx)\n\
-      \            # print(\"len\", len(in0))\n            self.state = 1\n      \
-      \      tag_index = self.nitems_written(0) + corr_max_idx #+ len(preamble)\n\
-      \            # self.add_item_tag(0,tag_index,  pmt.intern(\"payload_begin\"\
-      ),  pmt.intern(str(self.payload_nitems)))\n            self.add_item_tag(0,tag_index,\
-      \  pmt.intern(\"payload_begin\"),  pmt.intern(str(self.preamble_nitems)))\n\
-      \            self.items_written0_old = self.nitems_written(0)\n\n          \
-      \  # vect = np.arange(0,len(in0))\n            # plt.plot(vect, np.abs(in0))\n\
-      \            # plt.axvline(corr_max_idx, 0, 1, color = \"red\", label = \"Corr\
-      \ peak idx\")\n            fig, axs = plt.subplots(3)\n            axs[0].specgram(in0,\
-      \ NFFT=64, Fs=32, noverlap=8)\n            # axs[0].plot(np.arange(0, len(in0)),\
-      \ in0)\n            axs[1].plot(np.arange(0, len(corr)), corr)\n           \
-      \ axs[2].specgram(in0, NFFT=64, Fs=32, noverlap=8)\n            plt.show() \
-      \  \n\n\n        output_items[0][:] = in0[:len(output_items[0])]\n        return\
-      \ len(output_items[0])\n"
+      \ output_items):\n\n        in0 = input_items[0]\n        \n        # Preamble\
+      \ creation\n        preamble_up = np.reshape(modulate_vect(self.SF, [0]*2, 1,\
+      \ 1), -1)       # generate preamble_len upchirps\n        preamble_down = np.reshape((modulate_vect(self.SF,\
+      \ [0]*3, 1, -1)), -1)[0:int(2.25*pow(2,self.SF))]       # generate 3 downchirps\n\
+      \        preamble = np.concatenate((preamble_up, preamble_down))     # concatenate\
+      \ preamble_up and preamble_down[0:2.25*M]\n    \n        corr = np.abs(np.correlate(in0,\
+      \ preamble_down))**2\n        corr_max = np.max(corr[2800:3400])\n        corr_max_idx\
+      \ = np.argmax(corr[2800:3400]) + 2800\n\n        fig, axs = plt.subplots(5)\n\
+      \        axs[0].specgram(in0, NFFT=64, Fs=32, noverlap=8)\n        axs[1].specgram(in0[corr_max_idx:],\
+      \ NFFT=64, Fs=32, noverlap=8)\n        axs[2].specgram(in0[corr_max_idx+len(preamble_down):],\
+      \ NFFT=64, Fs=32, noverlap=8)\n        axs[3].plot(corr)\n        axs[4].plot(in0)\n\
+      \        axs[4].axvline(corr_max_idx, 0, 1, color = \"red\", label = \"Corr\
+      \ peak idx\")\n        plt.show()   \n\n        if corr_max > self.threshold\
+      \ :\n            tag_index = self.nitems_written(0) + corr_max_idx + len(preamble_down)\n\
+      \            self.add_item_tag(0,tag_index,  pmt.intern(\"payload_begin\"),\
+      \  pmt.intern(str(self.payload_nitems)))\n\n\n        output_items[0][:] = in0[:len(output_items[0])]\n\
+      \        return len(output_items[0])\n"
     affinity: ''
     alias: ''
     comment: ''
@@ -1197,7 +1188,7 @@ blocks:
     preamble_len: preamble_len
     threshold: int(5e6)
   states:
-    _io_cache: ('LoRa Correlation Sync', 'blk', [('preamble_len', '6'), ('payload_nitems',
+    _io_cache: ('LoRa Correlation Sync Payload', 'blk', [('preamble_len', '6'), ('payload_nitems',
       '1'), ('threshold', '10000'), ('SF', '1')], [('0', 'complex', 1)], [('0', 'complex',
       1)], 'Embedded Python Block example - a simple multiply const', ['SF', 'payload_nitems',
       'preamble_len', 'threshold'])

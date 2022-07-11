@@ -40,14 +40,15 @@ class blk(gr.sync_block):  # other base classes are basic_block, decim_block, in
         if self.state == 0 :
             threshold_in0 = np.where(in0 > self.threshold)
             if len(threshold_in0[0]) > 0:
+                print("\n[RX] thresh. : Power threshold exceeded")
                 # print("fast : ", threshold_in0[0][0])
                 self.state = 1
-                tag_index = self.nitems_read(0) + threshold_in0[0][0] + 0
+                tag_index = self.nitems_read(0) + threshold_in0[0][0]
                 # print(self.nitems_read(0), threshold_in0[0][0])
-                self.add_item_tag(0,tag_index,  pmt.intern("threshold_exceeded"),  pmt.intern(str(self.preamble_nitems +self.payload_nitems)))
+                self.add_item_tag(0,tag_index,  pmt.intern("threshold_exceeded"),  pmt.intern(str(self.preamble_nitems + self.payload_nitems + 1000)))
                 self.last_tag = tag_index
                 self.items_written0_old = self.nitems_written(0)
-                # # # debug
+                # # # # debug
                 # vect = np.arange(0,len(in0))
                 # plt.plot(vect, np.real(in0))
                 # plt.axvline(threshold_in0[0][0], 0, 1, color = "red", label = "Corr peak idx")
