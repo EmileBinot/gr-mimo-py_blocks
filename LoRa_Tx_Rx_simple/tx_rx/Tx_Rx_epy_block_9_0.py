@@ -56,14 +56,14 @@ class blk(gr.sync_block):  # other base classes are basic_block, decim_block, in
         corr_max = np.max(corr[2800:3400])
         corr_max_idx = np.argmax(corr[2800:3400]) + 2800
 
-        fig, axs = plt.subplots(5)
-        axs[0].specgram(in0, NFFT=64, Fs=32, noverlap=8)
-        axs[1].specgram(in0[corr_max_idx:], NFFT=64, Fs=32, noverlap=8)
-        axs[2].specgram(in0[corr_max_idx+len(preamble_down):], NFFT=64, Fs=32, noverlap=8)
-        axs[3].plot(corr)
-        axs[4].plot(in0)
-        axs[4].axvline(corr_max_idx, 0, 1, color = "red", label = "Corr peak idx")
-        plt.show()   
+        # fig, axs = plt.subplots(5)
+        # axs[0].specgram(in0, NFFT=64, Fs=32, noverlap=8)
+        # axs[1].specgram(in0[corr_max_idx:], NFFT=64, Fs=32, noverlap=8)
+        # axs[2].specgram(in0[corr_max_idx+len(preamble_down):], NFFT=64, Fs=32, noverlap=8)
+        # axs[3].plot(corr)
+        # axs[4].plot(in0)
+        # axs[4].axvline(corr_max_idx, 0, 1, color = "red", label = "Corr peak idx")
+        # plt.show()   
 
         if corr_max > self.threshold :
             tag_index = self.nitems_written(0) + corr_max_idx + len(preamble_down)

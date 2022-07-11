@@ -8,8 +8,22 @@
 # Title: Not titled yet
 # GNU Radio version: 3.10.2.0
 
+from packaging.version import Version as StrictVersion
+
+if __name__ == '__main__':
+    import ctypes
+    import sys
+    if sys.platform.startswith('linux'):
+        try:
+            x11 = ctypes.cdll.LoadLibrary('libX11.so')
+            x11.XInitThreads()
+        except:
+            print("Warning: failed to XInitThreads()")
+
+from PyQt5 import Qt
+from gnuradio import qtgui
+import sip
 from gnuradio import blocks
-import pmt
 from gnuradio import gr
 from gnuradio.filter import firdes
 from gnuradio.fft import window
@@ -19,6 +33,7 @@ from argparse import ArgumentParser
 from gnuradio.eng_arg import eng_float, intx
 from gnuradio import eng_notation
 from gnuradio import pdu
+import pmt
 from gnuradio import uhd
 import time
 from gnuradio import zeromq
@@ -38,11 +53,40 @@ import Tx_Rx_epy_block_9_0 as epy_block_9_0  # embedded python block
 
 
 
+from gnuradio import qtgui
 
-class Tx_Rx(gr.top_block):
+class Tx_Rx(gr.top_block, Qt.QWidget):
 
     def __init__(self):
         gr.top_block.__init__(self, "Not titled yet", catch_exceptions=True)
+        Qt.QWidget.__init__(self)
+        self.setWindowTitle("Not titled yet")
+        qtgui.util.check_set_qss()
+        try:
+            self.setWindowIcon(Qt.QIcon.fromTheme('gnuradio-grc'))
+        except:
+            pass
+        self.top_scroll_layout = Qt.QVBoxLayout()
+        self.setLayout(self.top_scroll_layout)
+        self.top_scroll = Qt.QScrollArea()
+        self.top_scroll.setFrameStyle(Qt.QFrame.NoFrame)
+        self.top_scroll_layout.addWidget(self.top_scroll)
+        self.top_scroll.setWidgetResizable(True)
+        self.top_widget = Qt.QWidget()
+        self.top_scroll.setWidget(self.top_widget)
+        self.top_layout = Qt.QVBoxLayout(self.top_widget)
+        self.top_grid_layout = Qt.QGridLayout()
+        self.top_layout.addLayout(self.top_grid_layout)
+
+        self.settings = Qt.QSettings("GNU Radio", "Tx_Rx")
+
+        try:
+            if StrictVersion(Qt.qVersion()) < StrictVersion("5.0.0"):
+                self.restoreGeometry(self.settings.value("geometry").toByteArray())
+            else:
+                self.restoreGeometry(self.settings.value("geometry"))
+        except:
+            pass
 
         ##################################################
         # Variables
@@ -79,7 +123,7 @@ class Tx_Rx(gr.top_block):
 
         self.uhd_usrp_source_1.set_center_freq(center_freq, 0)
         self.uhd_usrp_source_1.set_antenna("TX/RX", 0)
-        self.uhd_usrp_source_1.set_gain(gain, 0)
+        self.uhd_usrp_source_1.set_gain(0, 0)
         self.uhd_usrp_source_1.set_auto_dc_offset(True, 0)
         self.uhd_usrp_source_1.set_auto_iq_balance(True, 0)
         self.uhd_usrp_sink_0 = uhd.usrp_sink(
@@ -98,6 +142,9 @@ class Tx_Rx(gr.top_block):
         self.uhd_usrp_sink_0.set_center_freq(center_freq, 0)
         self.uhd_usrp_sink_0.set_antenna("TX/RX", 0)
         self.uhd_usrp_sink_0.set_gain(gain, 0)
+        self.qtgui_edit_box_msg_0 = qtgui.edit_box_msg(qtgui.STRING, 'pmt.intern("#t")', 'pmt.intern("#t")', True, True, 'pmt.intern("#t")', None)
+        self._qtgui_edit_box_msg_0_win = sip.wrapinstance(self.qtgui_edit_box_msg_0.qwidget(), Qt.QWidget)
+        self.top_layout.addWidget(self._qtgui_edit_box_msg_0_win)
         self.pdu_random_pdu_0 = pdu.random_pdu(payload_len, payload_len, 0x0F, SF)
         self.pdu_pdu_to_stream_x_0 = pdu.pdu_to_stream_b(pdu.EARLY_BURST_APPEND, 64)
         self.epy_block_9_0 = epy_block_9_0.blk(preamble_len=preamble_len, payload_nitems=payload_nitems, threshold=int(5e6), SF=9)
@@ -120,7 +167,6 @@ class Tx_Rx(gr.top_block):
         self.blocks_tagged_stream_align_0 = blocks.tagged_stream_align(gr.sizeof_gr_complex*1, 'packet_len')
         self.blocks_stream_to_vector_1 = blocks.stream_to_vector(gr.sizeof_gr_complex*1, payload_nitems)
         self.blocks_null_sink_2 = blocks.null_sink(gr.sizeof_gr_complex*1)
-        self.blocks_message_strobe_0 = blocks.message_strobe(pmt.intern("#t"), 10000)
         self.blocks_file_sink_0_3_0_0_0_0_1 = blocks.file_sink(gr.sizeof_int*1, 'dumpINsymb', False)
         self.blocks_file_sink_0_3_0_0_0_0_1.set_unbuffered(False)
         self.blocks_file_sink_0_3_0_0_0 = blocks.file_sink(gr.sizeof_char*1, 'dumpIN', False)
@@ -134,8 +180,8 @@ class Tx_Rx(gr.top_block):
         ##################################################
         # Connections
         ##################################################
-        self.msg_connect((self.blocks_message_strobe_0, 'strobe'), (self.pdu_random_pdu_0, 'generate'))
         self.msg_connect((self.pdu_random_pdu_0, 'pdus'), (self.pdu_pdu_to_stream_x_0, 'pdus'))
+        self.msg_connect((self.qtgui_edit_box_msg_0, 'msg'), (self.pdu_random_pdu_0, 'generate'))
         self.connect((self.blocks_stream_to_vector_1, 0), (self.blocks_file_sink_0_2_0_0, 0))
         self.connect((self.blocks_stream_to_vector_1, 0), (self.epy_block_6, 1))
         self.connect((self.blocks_tagged_stream_align_0, 0), (self.epy_block_7_0, 0))
@@ -162,6 +208,14 @@ class Tx_Rx(gr.top_block):
         self.connect((self.pdu_pdu_to_stream_x_0, 0), (self.epy_block_1_0_0, 0))
         self.connect((self.uhd_usrp_source_1, 0), (self.epy_block_9, 0))
 
+
+    def closeEvent(self, event):
+        self.settings = Qt.QSettings("GNU Radio", "Tx_Rx")
+        self.settings.setValue("geometry", self.saveGeometry())
+        self.stop()
+        self.wait()
+
+        event.accept()
 
     def get_payload_len(self):
         return self.payload_len
@@ -253,7 +307,6 @@ class Tx_Rx(gr.top_block):
     def set_gain(self, gain):
         self.gain = gain
         self.uhd_usrp_sink_0.set_gain(self.gain, 0)
-        self.uhd_usrp_source_1.set_gain(self.gain, 0)
 
     def get_const_multiply(self):
         return self.const_multiply
@@ -273,26 +326,32 @@ class Tx_Rx(gr.top_block):
 
 
 def main(top_block_cls=Tx_Rx, options=None):
+
+    if StrictVersion("4.5.0") <= StrictVersion(Qt.qVersion()) < StrictVersion("5.0.0"):
+        style = gr.prefs().get_string('qtgui', 'style', 'raster')
+        Qt.QApplication.setGraphicsSystem(style)
+    qapp = Qt.QApplication(sys.argv)
+
     tb = top_block_cls()
+
+    tb.start()
+
+    tb.show()
 
     def sig_handler(sig=None, frame=None):
         tb.stop()
         tb.wait()
 
-        sys.exit(0)
+        Qt.QApplication.quit()
 
     signal.signal(signal.SIGINT, sig_handler)
     signal.signal(signal.SIGTERM, sig_handler)
 
-    tb.start()
+    timer = Qt.QTimer()
+    timer.start(500)
+    timer.timeout.connect(lambda: None)
 
-    try:
-        input('Press Enter to quit: ')
-    except EOFError:
-        pass
-    tb.stop()
-    tb.wait()
-
+    qapp.exec_()
 
 if __name__ == '__main__':
     main()

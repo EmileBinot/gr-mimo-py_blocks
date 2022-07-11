@@ -9,7 +9,7 @@ options:
     description: ''
     gen_cmake: 'On'
     gen_linking: dynamic
-    generate_options: no_gui
+    generate_options: qt_gui
     hier_block_src_path: '.:'
     id: Tx_Rx
     max_nouts: '0'
@@ -102,9 +102,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [568, 772.0]
+    coordinate: [824, 1900.0]
     rotation: 0
-    state: true
+    state: enabled
 - name: os_factor
   id: variable
   parameters:
@@ -204,7 +204,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1584, 1260.0]
+    coordinate: [1752, 1012.0]
     rotation: 0
     state: enabled
 - name: blocks_file_sink_0_2_0_0
@@ -222,7 +222,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [568, 660.0]
+    coordinate: [824, 1788.0]
     rotation: 0
     state: enabled
 - name: blocks_file_sink_0_3_0_0_0
@@ -240,7 +240,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [696, 260.0]
+    coordinate: [816, 1428.0]
     rotation: 0
     state: enabled
 - name: blocks_file_sink_0_3_0_0_0_0_1
@@ -258,7 +258,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [688, 420.0]
+    coordinate: [944, 1548.0]
     rotation: 0
     state: enabled
 - name: blocks_message_strobe_0
@@ -270,14 +270,14 @@ blocks:
     maxoutbuf: '0'
     minoutbuf: '0'
     msg: pmt.intern("#t")
-    period: '10000'
+    period: '60000'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [88, 332.0]
+    coordinate: [104, 1532.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: blocks_null_sink_2
   id: blocks_null_sink
   parameters:
@@ -292,9 +292,28 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1584, 1200.0]
+    coordinate: [1752, 968.0]
     rotation: 0
     state: enabled
+- name: blocks_null_source_0
+  id: blocks_null_source
+  parameters:
+    affinity: ''
+    alias: ''
+    bus_structure_source: '[[0,],]'
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    num_outputs: '1'
+    type: complex
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1400, 1656.0]
+    rotation: 0
+    state: disabled
 - name: blocks_stream_to_vector_1
   id: blocks_stream_to_vector
   parameters:
@@ -310,7 +329,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [392, 632.0]
+    coordinate: [648, 1760.0]
     rotation: 0
     state: enabled
 - name: blocks_tagged_stream_align_0
@@ -328,7 +347,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [896, 620.0]
+    coordinate: [1152, 1748.0]
     rotation: 0
     state: enabled
 - name: blocks_tagged_stream_align_1
@@ -346,7 +365,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1008, 1204.0]
+    coordinate: [1136, 1028.0]
     rotation: 0
     state: enabled
 - name: blocks_tagged_stream_align_1_0
@@ -364,7 +383,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [336, 1276.0]
+    coordinate: [448, 1028.0]
     rotation: 0
     state: enabled
 - name: blocks_vector_source_x_0
@@ -384,7 +403,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [312, 244.0]
+    coordinate: [472, 1348.0]
     rotation: 0
     state: disabled
 - name: blocks_vector_to_stream_0
@@ -402,7 +421,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [744, 616.0]
+    coordinate: [1000, 1744.0]
     rotation: 0
     state: enabled
 - name: blocks_vector_to_stream_1
@@ -420,7 +439,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [392, 664.0]
+    coordinate: [648, 1792.0]
     rotation: 0
     state: enabled
 - name: epy_block_0_1_0_0
@@ -474,7 +493,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [528, 492.0]
+    coordinate: [784, 1620.0]
     rotation: 0
     state: enabled
 - name: epy_block_1_0_0
@@ -547,7 +566,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [216, 500.0]
+    coordinate: [472, 1628.0]
     rotation: 0
     state: enabled
 - name: epy_block_1_1
@@ -606,7 +625,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [368, 500.0]
+    coordinate: [624, 1628.0]
     rotation: 0
     state: enabled
 - name: epy_block_3
@@ -649,7 +668,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [48, 596.0]
+    coordinate: [304, 1724.0]
     rotation: 0
     state: enabled
 - name: epy_block_4
@@ -723,7 +742,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1384, 1276.0]
+    coordinate: [1552, 1028.0]
     rotation: 0
     state: enabled
 - name: epy_block_6
@@ -776,7 +795,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [544, 600.0]
+    coordinate: [800, 1728.0]
     rotation: 0
     state: enabled
 - name: epy_block_6_0
@@ -873,7 +892,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1184, 1276.0]
+    coordinate: [1360, 1028.0]
     rotation: 0
     state: enabled
 - name: epy_block_6_0_0
@@ -970,7 +989,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [552, 1276.0]
+    coordinate: [664, 1028.0]
     rotation: 0
     state: enabled
 - name: epy_block_6_0_0_0_0_0
@@ -1008,7 +1027,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [240, 668.0]
+    coordinate: [496, 1796.0]
     rotation: 0
     state: enabled
 - name: epy_block_7_0
@@ -1048,7 +1067,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1112, 612.0]
+    coordinate: [1368, 1740.0]
     rotation: 0
     state: enabled
 - name: epy_block_8
@@ -1078,7 +1097,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [680, 500.0]
+    coordinate: [936, 1628.0]
     rotation: 0
     state: enabled
 - name: epy_block_9
@@ -1134,7 +1153,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [128, 1260.0]
+    coordinate: [240, 1012.0]
     rotation: 0
     state: enabled
 - name: epy_block_9_0
@@ -1169,12 +1188,12 @@ blocks:
       \        preamble = np.concatenate((preamble_up, preamble_down))     # concatenate\
       \ preamble_up and preamble_down[0:2.25*M]\n    \n        corr = np.abs(np.correlate(in0,\
       \ preamble_down))**2\n        corr_max = np.max(corr[2800:3400])\n        corr_max_idx\
-      \ = np.argmax(corr[2800:3400]) + 2800\n\n        fig, axs = plt.subplots(5)\n\
-      \        axs[0].specgram(in0, NFFT=64, Fs=32, noverlap=8)\n        axs[1].specgram(in0[corr_max_idx:],\
-      \ NFFT=64, Fs=32, noverlap=8)\n        axs[2].specgram(in0[corr_max_idx+len(preamble_down):],\
-      \ NFFT=64, Fs=32, noverlap=8)\n        axs[3].plot(corr)\n        axs[4].plot(in0)\n\
-      \        axs[4].axvline(corr_max_idx, 0, 1, color = \"red\", label = \"Corr\
-      \ peak idx\")\n        plt.show()   \n\n        if corr_max > self.threshold\
+      \ = np.argmax(corr[2800:3400]) + 2800\n\n        # fig, axs = plt.subplots(5)\n\
+      \        # axs[0].specgram(in0, NFFT=64, Fs=32, noverlap=8)\n        # axs[1].specgram(in0[corr_max_idx:],\
+      \ NFFT=64, Fs=32, noverlap=8)\n        # axs[2].specgram(in0[corr_max_idx+len(preamble_down):],\
+      \ NFFT=64, Fs=32, noverlap=8)\n        # axs[3].plot(corr)\n        # axs[4].plot(in0)\n\
+      \        # axs[4].axvline(corr_max_idx, 0, 1, color = \"red\", label = \"Corr\
+      \ peak idx\")\n        # plt.show()   \n\n        if corr_max > self.threshold\
       \ :\n            tag_index = self.nitems_written(0) + corr_max_idx + len(preamble_down)\n\
       \            self.add_item_tag(0,tag_index,  pmt.intern(\"payload_begin\"),\
       \  pmt.intern(str(self.payload_nitems)))\n\n\n        output_items[0][:] = in0[:len(output_items[0])]\n\
@@ -1195,7 +1214,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [784, 1252.0]
+    coordinate: [896, 1004.0]
     rotation: 0
     state: enabled
 - name: pdu_pdu_to_stream_x_0
@@ -1213,7 +1232,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [520, 340.0]
+    coordinate: [616, 1516.0]
     rotation: 0
     state: enabled
 - name: pdu_random_pdu_0
@@ -1232,9 +1251,31 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [296, 316.0]
+    coordinate: [392, 1492.0]
     rotation: 0
     state: enabled
+- name: qtgui_edit_box_msg_0
+  id: qtgui_edit_box_msg
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    gui_hint: ''
+    is_pair: 'True'
+    is_static: 'True'
+    key: pmt.intern("#t")
+    label: pmt.intern("#t")
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    type: string
+    value: pmt.intern("#t")
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [112, 1356.0]
+    rotation: 0
+    state: true
 - name: uhd_usrp_sink_0
   id: uhd_usrp_sink
   parameters:
@@ -1509,7 +1550,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1376, 556.0]
+    coordinate: [1704, 1644.0]
     rotation: 0
     state: enabled
 - name: uhd_usrp_source_1
@@ -1689,7 +1730,7 @@ blocks:
     dc_offs_enb9: default
     dev_addr: '"addr=192.168.10.3"'
     dev_args: ''
-    gain0: gain
+    gain0: '0'
     gain1: '0'
     gain10: '0'
     gain11: '0'
@@ -1945,7 +1986,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [312, 964.0]
+    coordinate: [424, 716.0]
     rotation: 0
     state: enabled
 - name: virtual_sink_0
@@ -1958,7 +1999,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [704, 340.0]
+    coordinate: [816, 1508.0]
     rotation: 0
     state: enabled
 - name: virtual_sink_1
@@ -1971,7 +2012,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [816, 500.0]
+    coordinate: [1072, 1628.0]
     rotation: 0
     state: enabled
 - name: virtual_sink_2
@@ -1984,7 +2025,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [544, 1132.0]
+    coordinate: [648, 772.0]
     rotation: 0
     state: true
 - name: virtual_sink_3
@@ -1997,7 +2038,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1368, 716.0]
+    coordinate: [1624, 1844.0]
     rotation: 0
     state: enabled
 - name: virtual_source_0
@@ -2010,7 +2051,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [72, 500.0]
+    coordinate: [328, 1628.0]
     rotation: 0
     state: enabled
 - name: virtual_source_1
@@ -2023,7 +2064,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [48, 668.0]
+    coordinate: [304, 1796.0]
     rotation: 0
     state: enabled
 - name: virtual_source_3_0
@@ -2036,7 +2077,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [96, 1116.0]
+    coordinate: [208, 868.0]
     rotation: 0
     state: enabled
 - name: zeromq_pull_msg_source_1
@@ -2060,6 +2101,7 @@ blocks:
 
 connections:
 - [blocks_message_strobe_0, strobe, pdu_random_pdu_0, generate]
+- [blocks_null_source_0, '0', uhd_usrp_sink_0, '0']
 - [blocks_stream_to_vector_1, '0', blocks_file_sink_0_2_0_0, '0']
 - [blocks_stream_to_vector_1, '0', epy_block_6, '1']
 - [blocks_tagged_stream_align_0, '0', epy_block_7_0, '0']
@@ -2088,6 +2130,7 @@ connections:
 - [pdu_pdu_to_stream_x_0, '0', blocks_file_sink_0_3_0_0_0, '0']
 - [pdu_pdu_to_stream_x_0, '0', virtual_sink_0, '0']
 - [pdu_random_pdu_0, pdus, pdu_pdu_to_stream_x_0, pdus]
+- [qtgui_edit_box_msg_0, msg, pdu_random_pdu_0, generate]
 - [uhd_usrp_source_1, '0', virtual_sink_2, '0']
 - [virtual_source_0, '0', epy_block_1_0_0, '0']
 - [virtual_source_1, '0', epy_block_6_0_0_0_0_0, '0']
