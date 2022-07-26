@@ -1294,10 +1294,10 @@ blocks:
     maxoutbuf: '0'
     minoutbuf: '0'
   states:
-    _io_cache: ('Save Variables Cal', 'blk', [], [('Rx_PLL_phase', 'message', 1),
-      ('Tx_PLL_phase', 'message', 1), ('Trigger', 'message', 1), ('Max_angle', 'message',
-      1), ('Max_pwr', 'message', 1)], [], 'Embedded Python Block example - a simple
-      multiply const', [])
+    _io_cache: ('Save Variables Cal', 'blk', [], [('Max_pwr', 'message', 1), ('Rx_PLL_phase',
+      'message', 1), ('Trigger', 'message', 1), ('Tx_PLL_phase', 'message', 1), ('Max_angle',
+      'message', 1)], [], 'Embedded Python Block example - a simple multiply const',
+      [])
     bus_sink: false
     bus_source: false
     bus_structure: null
@@ -1346,10 +1346,10 @@ blocks:
     maxoutbuf: '0'
     minoutbuf: '0'
   states:
-    _io_cache: ('Save Variables No Cal', 'blk', [], [('Rx_PLL_phase', 'message', 1),
-      ('Tx_PLL_phase', 'message', 1), ('Trigger', 'message', 1), ('Max_angle', 'message',
-      1), ('Max_pwr', 'message', 1)], [], 'Embedded Python Block example - a simple
-      multiply const', [])
+    _io_cache: ('Save Variables No Cal', 'blk', [], [('Max_pwr', 'message', 1), ('Rx_PLL_phase',
+      'message', 1), ('Trigger', 'message', 1), ('Tx_PLL_phase', 'message', 1), ('Max_angle',
+      'message', 1)], [], 'Embedded Python Block example - a simple multiply const',
+      [])
     bus_sink: false
     bus_source: false
     bus_structure: null
