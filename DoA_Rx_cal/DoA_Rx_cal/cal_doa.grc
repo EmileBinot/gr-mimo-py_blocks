@@ -610,9 +610,9 @@ blocks:
       \        sum = []\n        \n        in0 = input_items[0][:100]\n        in1\
       \ = input_items[1][:100]\n\n        if np.mean(np.abs(in0)) > self.threshold\
       \ :\n            for theta in angles:\n                sum.append(np.mean(np.abs(in0\
-      \ * np.exp(-1j*theta) + in1 * np.exp(-1j*theta))))\n            \n         \
-      \   max_idx = np.argmax(sum)\n\n            output_items[0][:] = np.degrees(angles[max_idx])\n\
-      \        return len(output_items[0])\n"
+      \ + in1 * np.exp(-1j*theta))))\n            \n            max_idx = np.argmax(sum)\n\
+      \n            output_items[0][:] = np.degrees(angles[max_idx])\n        return\
+      \ len(output_items[0])\n"
     affinity: ''
     alias: ''
     comment: ''

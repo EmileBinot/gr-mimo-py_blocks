@@ -35,7 +35,7 @@ class blk(gr.sync_block):  # other base classes are basic_block, decim_block, in
 
         if np.mean(np.abs(in0)) > self.threshold :
             for theta in angles:
-                sum.append(np.mean(np.abs(in0 * np.exp(-1j*theta) + in1 * np.exp(-1j*theta))))
+                sum.append(np.mean(np.abs(in0 + in1 * np.exp(-1j*theta))))
             
             max_idx = np.argmax(sum)
 

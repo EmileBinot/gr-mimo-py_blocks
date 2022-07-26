@@ -24,7 +24,7 @@ def get_directive_gain(g, minDdBi=-20):
     return np.clip(DdBi, minDdBi, None)
 
 
-data = np.fromfile(open((os.path.join(dirname,"tx_rx_cal_dbs/beam_trace"))), dtype=np.float32)[:]
+data = np.fromfile(open((os.path.join(dirname,"data/data_26_07_2022/max_17"))), dtype=np.float32)[:]
 angles = data[1::2]
 pwr = data[::2]
 
