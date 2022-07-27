@@ -114,23 +114,6 @@ blocks:
     coordinate: [176, 20.0]
     rotation: 0
     state: enabled
-- name: analog_const_source_x_0
-  id: analog_const_source_x
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    const: '1'
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    type: complex
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [928, 276.0]
-    rotation: 0
-    state: disabled
 - name: blocks_float_to_complex_0
   id: blocks_float_to_complex
   parameters:
@@ -147,40 +130,6 @@ blocks:
     coordinate: [920, 376.0]
     rotation: 0
     state: enabled
-- name: blocks_rms_xx_0
-  id: blocks_rms_xx
-  parameters:
-    affinity: ''
-    alias: ''
-    alpha: '0.0001'
-    comment: ''
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    type: complex
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [1072, 500.0]
-    rotation: 0
-    state: disabled
-- name: blocks_rms_xx_1
-  id: blocks_rms_xx
-  parameters:
-    affinity: ''
-    alias: ''
-    alpha: '0.0001'
-    comment: ''
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    type: complex
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [736, 620.0]
-    rotation: 0
-    state: disabled
 - name: blocks_stream_to_vector_0
   id: blocks_stream_to_vector
   parameters:
@@ -334,28 +283,6 @@ blocks:
     coordinate: [376, 348.0]
     rotation: 0
     state: enabled
-- name: qtgui_edit_box_msg_0
-  id: qtgui_edit_box_msg
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    gui_hint: ''
-    is_pair: 'False'
-    is_static: 'True'
-    key: pmt.intern("#t")
-    label: Send Calibration Frame
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    type: string
-    value: pmt.intern("#t")
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [96, 436.0]
-    rotation: 0
-    state: disabled
 - name: qtgui_number_sink_0
   id: qtgui_number_sink
   parameters:
@@ -1200,10 +1127,7 @@ blocks:
     state: enabled
 
 connections:
-- [analog_const_source_x_0, '0', uhd_usrp_sink_0, '0']
 - [blocks_float_to_complex_0, '0', epy_block_0, '0']
-- [blocks_rms_xx_1, '0', qtgui_number_sink_0, '0']
-- [blocks_rms_xx_1, '0', zeromq_push_sink_0, '0']
 - [blocks_stream_to_vector_0, '0', fft_vxx_0, '0']
 - [blocks_uchar_to_float_0, '0', blocks_float_to_complex_0, '0']
 - [epy_block_0, '0', uhd_usrp_sink_0, '0']
@@ -1212,8 +1136,6 @@ connections:
 - [fft_vxx_0, '0', epy_block_0_0, '0']
 - [pdu_pdu_to_stream_x_0, '0', blocks_uchar_to_float_0, '0']
 - [pdu_random_pdu_0_0, pdus, pdu_pdu_to_stream_x_0, pdus]
-- [qtgui_edit_box_msg_0, msg, pdu_random_pdu_0_0, generate]
-- [uhd_usrp_source_0, '0', blocks_rms_xx_1, '0']
 - [uhd_usrp_source_0, '0', blocks_stream_to_vector_0, '0']
 - [uhd_usrp_source_0, '0', qtgui_sink_x_0, '0']
 - [zeromq_pull_msg_source_0, out, pdu_random_pdu_0_0, generate]
