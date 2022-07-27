@@ -872,31 +872,29 @@ blocks:
 - name: epy_block_0_0_0
   id: epy_block
   parameters:
-    _source_code: "\"\"\"\nEmbedded Python Blocks:\n\nEach time this file is saved,\
-      \ GRC will instantiate the first class it finds\nto get ports and parameters\
-      \ of your block. The arguments to __init__  will\nbe the parameters. All of\
-      \ them are required to have default values!\n\"\"\"\n\nimport numpy as np\n\
-      from gnuradio import gr\nimport pmt\n\nclass blk(gr.sync_block):  # other base\
-      \ classes are basic_block, decim_block, interp_block\n    \"\"\"Embedded Python\
-      \ Block example - a simple multiply const\"\"\"\n\n    def __init__(self, num_samples_to_process\
-      \ = 10000, threshold = 0.01):  # only default arguments here\n        \"\"\"\
-      arguments to this function show up as parameters in GRC\"\"\"\n        gr.sync_block.__init__(\n\
-      \            self,\n            name='PLLs phase shift detector',   # will show\
-      \ up in GRC\n            in_sig=[np.complex64,np.complex64],\n            out_sig=[np.complex64,np.complex64,np.float32]\n\
-      \        )\n        self.message_port_register_out(pmt.intern(\"phase_diff\"\
-      ))\n        self.num_samples_to_count = num_samples_to_process\n        self.counter\
-      \ = 0\n        self.set_output_multiple(self.num_samples_to_count)\n       \
-      \ self.threshold = threshold\n\n    def work(self, input_items, output_items):\n\
-      \        \"\"\"example: multiply with constant\"\"\"\n        # print(\"call\"\
-      )\n        output_items[0][:] = input_items[0] \n        output_items[1][:]\
-      \ = input_items[1]\n        \n        angles = np.arange(-np.pi,np.pi,np.pi/180)\n\
-      \        sum = []\n        \n        in0 = input_items[0][:100]\n        in1\
-      \ = input_items[1][:100]\n        if np.mean(np.abs(in0)) > self.threshold :\n\
-      \            for theta in angles:\n                sum.append(np.mean(np.abs(in0\
-      \ + in1 * np.exp(-1j*theta))))\n            \n            max_idx = np.argmax(sum)\n\
-      \n            PMT_msg = pmt.from_float(angles[max_idx])\n            self.message_port_pub(pmt.intern(\"\
-      phase_diff\"), PMT_msg)\n\n            output_items[2][:] = np.degrees(angles[max_idx])\n\
-      \        return len(output_items[0])\n"
+    _source_code: "\"\"\"\nPhase shift estimator block :\nCalculate phase shift between\
+      \ in_sig[0] and in_sig[1]\n\nINPUT:\n    - in_sig[0]: IQ complex samples (carrier\
+      \ with phase phi0)\n    - in_sig[1]: IQ complex samples (carrier with phase\
+      \ phi1)\nOUTPUT:\n    - out_sig[0]: in_sig[0] (pass thru)\n    - out_sig[1]:\
+      \ in_sig[1] (pass thru)\n    - out_sig[2]: phase estimation (phi0-phi1) as float\
+      \ stream \n    - out_sig[3]: phase estimation (phi0-phi1) as message\n\n\"\"\
+      \"\n\nimport numpy as np\nfrom gnuradio import gr\nimport pmt\n\ndef phase_estimator(in0,in1,\
+      \ angles_vect) :\n    sum = []\n    for theta in angles_vect:\n        sum.append(np.mean(np.abs(in0\
+      \ + in1 * np.exp(-1j*theta))))\n    max_idx = np.argmax(sum)\n    return angles_vect[max_idx]\n\
+      \n\nclass blk(gr.sync_block):\n    def __init__(self, num_samples_to_process\
+      \ = 10000, threshold = 0.01):\n        gr.sync_block.__init__(\n           \
+      \ self,\n            name='Phase shift estimator',\n            in_sig=[np.complex64,np.complex64],\n\
+      \            out_sig=[np.complex64,np.complex64,np.float32]\n        )\n   \
+      \     self.message_port_register_out(pmt.intern(\"phase_diff\"))\n        self.num_samples_to_count\
+      \ = num_samples_to_process\n        self.counter = 0\n        self.set_output_multiple(self.num_samples_to_count)\n\
+      \        self.threshold = threshold\n\n    def work(self, input_items, output_items):\n\
+      \        output_items[0][:] = input_items[0] \n        output_items[1][:] =\
+      \ input_items[1]\n        \n        angles_vect = np.arange(-np.pi,np.pi,np.pi/180)\n\
+      \        \n        in0 = input_items[0][:100]\n        in1 = input_items[1][:100]\n\
+      \        if np.mean(np.abs(in0)) > self.threshold :\n\n            phase_diff\
+      \ = phase_estimator(in0, in1, angles_vect)\n\n            PMT_msg = pmt.from_float(phase_diff)\n\
+      \            self.message_port_pub(pmt.intern(\"phase_diff\"), PMT_msg)\n\n\
+      \            output_items[2][:] = np.degrees(phase_diff)\n        return len(output_items[0])\n"
     affinity: ''
     alias: ''
     comment: ''
@@ -905,10 +903,10 @@ blocks:
     num_samples_to_process: samp_rate*2
     threshold: '0.05'
   states:
-    _io_cache: ('PLLs phase shift detector', 'blk', [('num_samples_to_process', '10000'),
+    _io_cache: ('Phase shift estimator', 'blk', [('num_samples_to_process', '10000'),
       ('threshold', '0.01')], [('0', 'complex', 1), ('1', 'complex', 1)], [('0', 'complex',
-      1), ('1', 'complex', 1), ('2', 'float', 1), ('phase_diff', 'message', 1)], 'Embedded
-      Python Block example - a simple multiply const', ['threshold'])
+      1), ('1', 'complex', 1), ('2', 'float', 1), ('phase_diff', 'message', 1)], '',
+      ['threshold'])
     bus_sink: false
     bus_source: false
     bus_structure: null
@@ -918,31 +916,29 @@ blocks:
 - name: epy_block_0_0_0_1
   id: epy_block
   parameters:
-    _source_code: "\"\"\"\nEmbedded Python Blocks:\n\nEach time this file is saved,\
-      \ GRC will instantiate the first class it finds\nto get ports and parameters\
-      \ of your block. The arguments to __init__  will\nbe the parameters. All of\
-      \ them are required to have default values!\n\"\"\"\n\nimport numpy as np\n\
-      from gnuradio import gr\nimport pmt\n\nclass blk(gr.sync_block):  # other base\
-      \ classes are basic_block, decim_block, interp_block\n    \"\"\"Embedded Python\
-      \ Block example - a simple multiply const\"\"\"\n\n    def __init__(self, num_samples_to_process\
-      \ = 10000, threshold = 0.01):  # only default arguments here\n        \"\"\"\
-      arguments to this function show up as parameters in GRC\"\"\"\n        gr.sync_block.__init__(\n\
-      \            self,\n            name='PLLs phase shift detector',   # will show\
-      \ up in GRC\n            in_sig=[np.complex64,np.complex64],\n            out_sig=[np.complex64,np.complex64,np.float32]\n\
-      \        )\n        self.message_port_register_out(pmt.intern(\"phase_diff\"\
-      ))\n        self.num_samples_to_count = num_samples_to_process\n        self.counter\
-      \ = 0\n        self.set_output_multiple(self.num_samples_to_count)\n       \
-      \ self.threshold = threshold\n\n    def work(self, input_items, output_items):\n\
-      \        \"\"\"example: multiply with constant\"\"\"\n        # print(\"call\"\
-      )\n        output_items[0][:] = input_items[0] \n        output_items[1][:]\
-      \ = input_items[1]\n        \n        angles = np.arange(-np.pi,np.pi,np.pi/180)\n\
-      \        sum = []\n        \n        in0 = input_items[0][:100]\n        in1\
-      \ = input_items[1][:100]\n        if np.mean(np.abs(in0)) > self.threshold :\n\
-      \            for theta in angles:\n                sum.append(np.mean(np.abs(in0\
-      \ + in1 * np.exp(-1j*theta))))\n            \n            max_idx = np.argmax(sum)\n\
-      \n            PMT_msg = pmt.from_float(angles[max_idx])\n            self.message_port_pub(pmt.intern(\"\
-      phase_diff\"), PMT_msg)\n\n            output_items[2][:] = np.degrees(angles[max_idx])\n\
-      \        return len(output_items[0])\n"
+    _source_code: "\"\"\"\nPhase shift estimator block :\nCalculate phase shift between\
+      \ in_sig[0] and in_sig[1]\n\nINPUT:\n    - in_sig[0]: IQ complex samples (carrier\
+      \ with phase phi0)\n    - in_sig[1]: IQ complex samples (carrier with phase\
+      \ phi1)\nOUTPUT:\n    - out_sig[0]: in_sig[0] (pass thru)\n    - out_sig[1]:\
+      \ in_sig[1] (pass thru)\n    - out_sig[2]: phase estimation (phi0-phi1) as float\
+      \ stream \n    - out_sig[3]: phase estimation (phi0-phi1) as message\n\n\"\"\
+      \"\n\nimport numpy as np\nfrom gnuradio import gr\nimport pmt\n\ndef phase_estimator(in0,in1,\
+      \ angles_vect) :\n    sum = []\n    for theta in angles_vect:\n        sum.append(np.mean(np.abs(in0\
+      \ + in1 * np.exp(-1j*theta))))\n    max_idx = np.argmax(sum)\n    return angles_vect[max_idx]\n\
+      \n\nclass blk(gr.sync_block):\n    def __init__(self, num_samples_to_process\
+      \ = 10000, threshold = 0.01):\n        gr.sync_block.__init__(\n           \
+      \ self,\n            name='Phase shift estimator',\n            in_sig=[np.complex64,np.complex64],\n\
+      \            out_sig=[np.complex64,np.complex64,np.float32]\n        )\n   \
+      \     self.message_port_register_out(pmt.intern(\"phase_diff\"))\n        self.num_samples_to_count\
+      \ = num_samples_to_process\n        self.counter = 0\n        self.set_output_multiple(self.num_samples_to_count)\n\
+      \        self.threshold = threshold\n\n    def work(self, input_items, output_items):\n\
+      \        output_items[0][:] = input_items[0] \n        output_items[1][:] =\
+      \ input_items[1]\n        \n        angles_vect = np.arange(-np.pi,np.pi,np.pi/180)\n\
+      \        \n        in0 = input_items[0][:100]\n        in1 = input_items[1][:100]\n\
+      \        if np.mean(np.abs(in0)) > self.threshold :\n\n            phase_diff\
+      \ = phase_estimator(in0, in1, angles_vect)\n\n            PMT_msg = pmt.from_float(phase_diff)\n\
+      \            self.message_port_pub(pmt.intern(\"phase_diff\"), PMT_msg)\n\n\
+      \            output_items[2][:] = np.degrees(phase_diff)\n        return len(output_items[0])\n"
     affinity: ''
     alias: ''
     comment: ''
@@ -951,14 +947,14 @@ blocks:
     num_samples_to_process: samp_rate*2
     threshold: '0.05'
   states:
-    _io_cache: ('PLLs phase shift detector', 'blk', [('num_samples_to_process', '10000'),
+    _io_cache: ('Phase shift estimator', 'blk', [('num_samples_to_process', '10000'),
       ('threshold', '0.01')], [('0', 'complex', 1), ('1', 'complex', 1)], [('0', 'complex',
-      1), ('1', 'complex', 1), ('2', 'float', 1), ('phase_diff', 'message', 1)], 'Embedded
-      Python Block example - a simple multiply const', ['threshold'])
+      1), ('1', 'complex', 1), ('2', 'float', 1), ('phase_diff', 'message', 1)], '',
+      ['threshold'])
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1592, 584.0]
+    coordinate: [1584, 584.0]
     rotation: 0
     state: enabled
 - name: epy_block_0_2
@@ -1024,24 +1020,19 @@ blocks:
 - name: epy_block_0_3_0_0
   id: epy_block
   parameters:
-    _source_code: "\"\"\"\nEmbedded Python Blocks:\n\nEach time this file is saved,\
-      \ GRC will instantiate the first class it finds\nto get ports and parameters\
-      \ of your block. The arguments to __init__  will\nbe the parameters. All of\
-      \ them are required to have default values!\n\"\"\"\n\nimport numpy as np\n\
-      from gnuradio import gr\nimport pmt\n\ndef NormalizeData(data):\n    return\
-      \ (data - np.min(data)) / (np.max(data) - np.min(data))\n\nclass blk(gr.sync_block):\
-      \  # other base classes are basic_block, decim_block, interp_block\n    \"\"\
-      \"Embedded Python Block example - a simple multiply const\"\"\"\n\n    def __init__(self):\
-      \  # only default arguments here\n        \"\"\"arguments to this function show\
-      \ up as parameters in GRC\"\"\"\n        gr.sync_block.__init__(\n         \
-      \   self,\n            name='Phase Compensation',   # will show up in GRC\n\
-      \            in_sig=[np.complex64, np.complex64],\n            out_sig=[np.complex64,\
-      \ np.complex64]\n        )\n        self.message_port_register_in(pmt.intern(\"\
+    _source_code: "\"\"\"\nPhase Compensation block :\nApply phase shift to in1\n\n\
+      INPUT:\n    - in_sig[0]: IQ complex samples (carrier with phase phi0)\n    -\
+      \ in_sig[1]: IQ complex samples (carrier with phase phi1)\n    - in_sig[2]:\
+      \ phase shift to apply to in1\nOUTPUT:\n    - out_sig[0]: in_sig[0] (pass thru)\n\
+      \    - out_sig[1]: in_sig[1] * np.exp(-1j*self.phase_diff)\n\"\"\"\n\nimport\
+      \ numpy as np\nfrom gnuradio import gr\nimport pmt\n\nclass blk(gr.sync_block):\n\
+      \    def __init__(self):\n        gr.sync_block.__init__(\n            self,\n\
+      \            name='Phase Compensation',\n            in_sig=[np.complex64, np.complex64],\n\
+      \            out_sig=[np.complex64, np.complex64]\n        )\n        self.message_port_register_in(pmt.intern(\"\
       phase_diff\"))\n        self.set_msg_handler(pmt.intern(\"phase_diff\"), self.handle_msg)\n\
       \        self.phase_diff = 0\n        self.set_tag_propagation_policy(gr.TPP_ONE_TO_ONE)\n\
       \    \n    def handle_msg(self, msg):  \n        self.phase_diff = pmt.to_float(msg)\n\
-      \        # print(self.phase_diff)\n\n    def work(self, input_items, output_items):\n\
-      \        \"\"\"example: multiply with constant\"\"\"\n        output_items[0][:]\
+      \n    def work(self, input_items, output_items):\n        output_items[0][:]\
       \ = input_items[0]\n        output_items[1][:] = input_items[1] * np.exp(-1j*self.phase_diff)\n\
       \        return len(output_items[0])\n"
     affinity: ''
@@ -1052,7 +1043,7 @@ blocks:
   states:
     _io_cache: ('Phase Compensation', 'blk', [], [('0', 'complex', 1), ('1', 'complex',
       1), ('phase_diff', 'message', 1)], [('0', 'complex', 1), ('1', 'complex', 1)],
-      'Embedded Python Block example - a simple multiply const', [])
+      '', [])
     bus_sink: false
     bus_source: false
     bus_structure: null
@@ -1062,24 +1053,19 @@ blocks:
 - name: epy_block_0_3_0_1
   id: epy_block
   parameters:
-    _source_code: "\"\"\"\nEmbedded Python Blocks:\n\nEach time this file is saved,\
-      \ GRC will instantiate the first class it finds\nto get ports and parameters\
-      \ of your block. The arguments to __init__  will\nbe the parameters. All of\
-      \ them are required to have default values!\n\"\"\"\n\nimport numpy as np\n\
-      from gnuradio import gr\nimport pmt\n\ndef NormalizeData(data):\n    return\
-      \ (data - np.min(data)) / (np.max(data) - np.min(data))\n\nclass blk(gr.sync_block):\
-      \  # other base classes are basic_block, decim_block, interp_block\n    \"\"\
-      \"Embedded Python Block example - a simple multiply const\"\"\"\n\n    def __init__(self):\
-      \  # only default arguments here\n        \"\"\"arguments to this function show\
-      \ up as parameters in GRC\"\"\"\n        gr.sync_block.__init__(\n         \
-      \   self,\n            name='Phase Compensation',   # will show up in GRC\n\
-      \            in_sig=[np.complex64, np.complex64],\n            out_sig=[np.complex64,\
-      \ np.complex64]\n        )\n        self.message_port_register_in(pmt.intern(\"\
+    _source_code: "\"\"\"\nPhase Compensation block :\nApply phase shift to in1\n\n\
+      INPUT:\n    - in_sig[0]: IQ complex samples (carrier with phase phi0)\n    -\
+      \ in_sig[1]: IQ complex samples (carrier with phase phi1)\n    - in_sig[2]:\
+      \ phase shift to apply to in1\nOUTPUT:\n    - out_sig[0]: in_sig[0] (pass thru)\n\
+      \    - out_sig[1]: in_sig[1] * np.exp(-1j*self.phase_diff)\n\"\"\"\n\nimport\
+      \ numpy as np\nfrom gnuradio import gr\nimport pmt\n\nclass blk(gr.sync_block):\n\
+      \    def __init__(self):\n        gr.sync_block.__init__(\n            self,\n\
+      \            name='Phase Compensation',\n            in_sig=[np.complex64, np.complex64],\n\
+      \            out_sig=[np.complex64, np.complex64]\n        )\n        self.message_port_register_in(pmt.intern(\"\
       phase_diff\"))\n        self.set_msg_handler(pmt.intern(\"phase_diff\"), self.handle_msg)\n\
       \        self.phase_diff = 0\n        self.set_tag_propagation_policy(gr.TPP_ONE_TO_ONE)\n\
       \    \n    def handle_msg(self, msg):  \n        self.phase_diff = pmt.to_float(msg)\n\
-      \        # print(self.phase_diff)\n\n    def work(self, input_items, output_items):\n\
-      \        \"\"\"example: multiply with constant\"\"\"\n        output_items[0][:]\
+      \n    def work(self, input_items, output_items):\n        output_items[0][:]\
       \ = input_items[0]\n        output_items[1][:] = input_items[1] * np.exp(-1j*self.phase_diff)\n\
       \        return len(output_items[0])\n"
     affinity: ''
@@ -1090,7 +1076,7 @@ blocks:
   states:
     _io_cache: ('Phase Compensation', 'blk', [], [('0', 'complex', 1), ('1', 'complex',
       1), ('phase_diff', 'message', 1)], [('0', 'complex', 1), ('1', 'complex', 1)],
-      'Embedded Python Block example - a simple multiply const', [])
+      '', [])
     bus_sink: false
     bus_source: false
     bus_structure: null
@@ -1138,24 +1124,19 @@ blocks:
 - name: epy_block_0_3_0_1_0_0
   id: epy_block
   parameters:
-    _source_code: "\"\"\"\nEmbedded Python Blocks:\n\nEach time this file is saved,\
-      \ GRC will instantiate the first class it finds\nto get ports and parameters\
-      \ of your block. The arguments to __init__  will\nbe the parameters. All of\
-      \ them are required to have default values!\n\"\"\"\n\nimport numpy as np\n\
-      from gnuradio import gr\nimport pmt\n\ndef NormalizeData(data):\n    return\
-      \ (data - np.min(data)) / (np.max(data) - np.min(data))\n\nclass blk(gr.sync_block):\
-      \  # other base classes are basic_block, decim_block, interp_block\n    \"\"\
-      \"Embedded Python Block example - a simple multiply const\"\"\"\n\n    def __init__(self):\
-      \  # only default arguments here\n        \"\"\"arguments to this function show\
-      \ up as parameters in GRC\"\"\"\n        gr.sync_block.__init__(\n         \
-      \   self,\n            name='Phase Compensation',   # will show up in GRC\n\
-      \            in_sig=[np.complex64, np.complex64],\n            out_sig=[np.complex64,\
-      \ np.complex64]\n        )\n        self.message_port_register_in(pmt.intern(\"\
+    _source_code: "\"\"\"\nPhase Compensation block :\nApply phase shift to in1\n\n\
+      INPUT:\n    - in_sig[0]: IQ complex samples (carrier with phase phi0)\n    -\
+      \ in_sig[1]: IQ complex samples (carrier with phase phi1)\n    - in_sig[2]:\
+      \ phase shift to apply to in1\nOUTPUT:\n    - out_sig[0]: in_sig[0] (pass thru)\n\
+      \    - out_sig[1]: in_sig[1] * np.exp(-1j*self.phase_diff)\n\"\"\"\n\nimport\
+      \ numpy as np\nfrom gnuradio import gr\nimport pmt\n\nclass blk(gr.sync_block):\n\
+      \    def __init__(self):\n        gr.sync_block.__init__(\n            self,\n\
+      \            name='Phase Compensation',\n            in_sig=[np.complex64, np.complex64],\n\
+      \            out_sig=[np.complex64, np.complex64]\n        )\n        self.message_port_register_in(pmt.intern(\"\
       phase_diff\"))\n        self.set_msg_handler(pmt.intern(\"phase_diff\"), self.handle_msg)\n\
       \        self.phase_diff = 0\n        self.set_tag_propagation_policy(gr.TPP_ONE_TO_ONE)\n\
       \    \n    def handle_msg(self, msg):  \n        self.phase_diff = pmt.to_float(msg)\n\
-      \        # print(self.phase_diff)\n\n    def work(self, input_items, output_items):\n\
-      \        \"\"\"example: multiply with constant\"\"\"\n        output_items[0][:]\
+      \n    def work(self, input_items, output_items):\n        output_items[0][:]\
       \ = input_items[0]\n        output_items[1][:] = input_items[1] * np.exp(-1j*self.phase_diff)\n\
       \        return len(output_items[0])\n"
     affinity: ''
@@ -1166,34 +1147,29 @@ blocks:
   states:
     _io_cache: ('Phase Compensation', 'blk', [], [('0', 'complex', 1), ('1', 'complex',
       1), ('phase_diff', 'message', 1)], [('0', 'complex', 1), ('1', 'complex', 1)],
-      'Embedded Python Block example - a simple multiply const', [])
+      '', [])
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1936, 488.0]
+    coordinate: [1960, 488.0]
     rotation: 0
     state: enabled
 - name: epy_block_1
   id: epy_block
   parameters:
-    _source_code: "\"\"\"\nDBS\n\"\"\"\n\nimport numpy as np\nfrom gnuradio import\
-      \ gr\nimport math\n\nclass blk(gr.sync_block):  # other base classes are basic_block,\
-      \ decim_block, interp_block\n    \"\"\"Embedded Python Block example - a simple\
-      \ multiply const\"\"\"\n\n    def __init__(self, angle=0.0):  # only default\
-      \ arguments here\n        \"\"\"arguments to this function show up as parameters\
-      \ in GRC\"\"\"\n        gr.sync_block.__init__(\n            self,\n       \
-      \     name='DBS precoder',   # will show up in GRC\n            in_sig=[np.complex64,\
+    _source_code: "\"\"\"\nDBS precoding block :\nDigital Beamsteering precoding (F\
+      \ being precoding matrix) for 2 antennas.\nReference : \"Massive MIMO, une approche\
+      \ angulaire pour [...] millim\xE9triques\" by Antoine Roz\xE9\n\nINPUT:\n  \
+      \  - in_sig[0]: IQ complex samples\n    - in_sig[1]: IQ complex samples \nOUTPUT:\n\
+      \    - out_sig[0]: in_sig[0] * F[0]\n    - out_sig[1]: in_sig[1] * F[1]\n\n\"\
+      \"\"\n\nimport numpy as np\nfrom gnuradio import gr\nimport math\n\nclass blk(gr.sync_block):\n\
+      \    def __init__(self, angle=0.0):\n        gr.sync_block.__init__(\n     \
+      \       self,\n            name='DBS precoder',\n            in_sig=[np.complex64,\
       \ np.complex64],\n            out_sig=[np.complex64, np.complex64]\n       \
-      \ )\n        # if an attribute with the same name as a parameter is found,\n\
-      \        # a callback is registered (properties work, too).\n        self.angle\
-      \ = angle  # [-90 -> 90]\n\n    def work(self, input_items, output_items):\n\
-      \n        # self.F = np.transpose([np.exp(-1j*math.pi*math.sin(self.angle*math.pi/180)*np.arange(1,2+1))])\
-      \ * (1/math.sqrt(2))\n        # x = [np.transpose(input_items[0])]\n       \
-      \ # x_precoded = np.matmul(self.F, x)\n        # output_items[0][:] = x_precoded[0]\n\
-      \        # output_items[1][:] = x_precoded[1]\n        F = np.exp(-1j*math.pi*math.sin((self.angle)*math.pi/180)*np.arange(0,2))\n\
-      \        output_items[0][:] = input_items[0] * F[0]\n        # output_items[1][:]\
-      \ = input_items[1]*np.exp(-1j*self.angle*math.pi/180))\n        output_items[1][:]\
-      \ = input_items[1]* F[1]\n        return len(output_items[0])\n"
+      \ )\n        self.angle = angle  # [-90 -> 90]\n\n    def work(self, input_items,\
+      \ output_items):\n        F = np.exp(-1j*math.pi*math.sin((self.angle)*math.pi/180)*np.arange(0,2))\
+      \   # precoding matrix\n        output_items[0][:] = input_items[0] * F[0]\n\
+      \        output_items[1][:] = input_items[1]* F[1]\n        return len(output_items[0])\n"
     affinity: ''
     alias: ''
     angle: angle
@@ -1202,8 +1178,7 @@ blocks:
     minoutbuf: '0'
   states:
     _io_cache: ('DBS precoder', 'blk', [('angle', '0.0')], [('0', 'complex', 1), ('1',
-      'complex', 1)], [('0', 'complex', 1), ('1', 'complex', 1)], 'Embedded Python
-      Block example - a simple multiply const', ['angle'])
+      'complex', 1)], [('0', 'complex', 1), ('1', 'complex', 1)], '', ['angle'])
     bus_sink: false
     bus_source: false
     bus_structure: null
@@ -1294,8 +1269,8 @@ blocks:
     maxoutbuf: '0'
     minoutbuf: '0'
   states:
-    _io_cache: ('Save Variables Cal', 'blk', [], [('Tx_PLL_phase', 'message', 1),
-      ('Max_pwr', 'message', 1), ('Rx_PLL_phase', 'message', 1), ('Max_angle', 'message',
+    _io_cache: ('Save Variables Cal', 'blk', [], [('Rx_PLL_phase', 'message', 1),
+      ('Max_pwr', 'message', 1), ('Max_angle', 'message', 1), ('Tx_PLL_phase', 'message',
       1), ('Trigger', 'message', 1)], [], 'Embedded Python Block example - a simple
       multiply const', [])
     bus_sink: false
@@ -1346,8 +1321,8 @@ blocks:
     maxoutbuf: '0'
     minoutbuf: '0'
   states:
-    _io_cache: ('Save Variables No Cal', 'blk', [], [('Tx_PLL_phase', 'message', 1),
-      ('Max_pwr', 'message', 1), ('Rx_PLL_phase', 'message', 1), ('Max_angle', 'message',
+    _io_cache: ('Save Variables No Cal', 'blk', [], [('Rx_PLL_phase', 'message', 1),
+      ('Max_pwr', 'message', 1), ('Max_angle', 'message', 1), ('Tx_PLL_phase', 'message',
       1), ('Trigger', 'message', 1)], [], 'Embedded Python Block example - a simple
       multiply const', [])
     bus_sink: false

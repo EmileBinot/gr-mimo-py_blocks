@@ -28,10 +28,13 @@ TODO : Link to intership report
 
 ## Usage
 
-* ``/DBS_Tx_cal/tx_rx_cal_dbs/tx_rx_cal_dbs.grc`` is an usage example for 2x1 MiSo. The GUI is divided in 3 columns, send the Rx calibration frame to calibrate Rx PLLS, send the Tx calibration frame to calibrate Tx PLL. Last column is dedicated to beamsteering, the script will scan the beam through every angle to see where the receiver is getting the most power.
+* ``UE/ue_script.grc`` is the script to be run on UE (user equipment), it is the same for both BS (base station) scripts examples. The goal of this script is to record received power and send frames when asked.
 ![Tx](./screenshots/dbs.png)
 
-* ``/DoA_Rx_cal/DoA_Rx_cal/cal_doa.grc`` is an usage example for 1x2 SiMo. The GUI is divided in 2 columns, send the Rx calibration frame to calibrate Rx PLLS, then, physically move the USRP while sending frames to see the compass move.
+* ``/BS/DBS_Tx_cal/tx_rx_cal_dbs/tx_rx_cal_dbs.grc`` is an usage example for 2x1 MiSo to be run on BS. The GUI is divided in 3 columns, send the Rx calibration frame to calibrate Rx PLLs, send the Tx calibration frame to calibrate Tx PLLs. Last column is dedicated to beamsteering, the script will scan the beam through every angle to see where the UE is getting the most power.
+![Tx](./screenshots/dbs.png)
+
+* ``BS/DoA_Rx_cal/DoA_Rx_cal/cal_doa.grc`` is an usage example for 1x2 SiMo to be run on BS. The GUI is divided in 2 columns, send the Rx calibration frame to calibrate Rx PLLs, then, physically move the UE while sending frames with it to see the compass move on the GUI.
 ![Tx](./screenshots/doa.png)
 
 ## Notes
